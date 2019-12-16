@@ -1,8 +1,9 @@
 version: '3'
 services:
   target:
-    context: docker/target/
-    dockerfile: Dockerfile
+    build:
+      context: docker/target/
+      dockerfile: Dockerfile
     ports:
             - "8080:80"
     restart: always
