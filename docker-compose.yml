@@ -4,8 +4,8 @@ services:
     build:
       context: docker/server/
       dockerfile: Dockerfile
-    ports:
-            - "8080:80"
+    expose:
+      - "8080"
     restart: always
     container_name: server
 
