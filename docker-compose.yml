@@ -15,3 +15,10 @@ services:
       dockerfile: Dockerfile
     restart: always
     container_name: attacker
+
+  monitor:
+    build:
+      context: docker/monitor/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: monitor
