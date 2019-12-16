@@ -9,6 +9,7 @@ RUN groupadd wireshark
 RUN usermod -a -G wireshark root
 RUN newgrp wireshark
 RUN chgrp wireshark /usr/bin/dumpcap
-RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap
+RUN setcap CAP_NET_RAW,CAP_NET_ADMIN,CAP_DAC_OVERRIDE+eip /usr/bin/dumpcap
+RUN chmod +x /usr/bin/dumpcap
 
 CMD ["tshark"]
