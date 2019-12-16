@@ -37,7 +37,8 @@ def runSlowloris():
         '5',
         'http://target/'
     ]
-    proc     = subprocess.Popen(commands, stdout=open(os.devnull))
+    proc     = subprocess.Popen(commands, stdout=open(os.devnull),
+        stderr=open(os.devnull))
     proc.communicate()
     time.sleep(TIME_TO_RUN)
     proc.kill()
