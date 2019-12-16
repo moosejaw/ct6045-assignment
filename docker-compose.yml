@@ -8,3 +8,10 @@ services:
             - "8080:80"
     restart: always
     container_name: server
+
+  attacker:
+    build:
+      context: docker/attacker/
+      dockerfile: dockerfile
+    restart: always
+    container_name: attacker
