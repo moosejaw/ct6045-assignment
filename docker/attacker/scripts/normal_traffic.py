@@ -4,7 +4,7 @@ import random
 from urllib import request
 
 # Set the target as defined by the container name and port
-TARGET   = 'server:8080'
+TARGET   = 'http://server:8080'
 TIME_MIN = 5
 TIME_MAX = 30
 
@@ -13,6 +13,7 @@ TIME_MAX = 30
 # as normal using Python's built-in urllib library. The request is opened and
 # closed as normal.
 if __name__ == '__main__':
+    with open('reqs.txt', 'w') as f:
     while True:
         # Pause for a random time in the given range
         time.sleep(random.randrange(TIME_MIN, TIME_MAX))
