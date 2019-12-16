@@ -1,8 +1,8 @@
 FROM python:3.6-slim
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get upgrade
-RUN apt-get install git
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install git
 
 RUN git clone https://github.com/gkbrk/slowloris.git
 
