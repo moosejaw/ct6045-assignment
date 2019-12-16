@@ -4,7 +4,7 @@ import random
 from urllib import request
 
 # Set the target as defined by the container name and port
-TARGET   = 'http://target:8080'
+TARGET   = 'http://target:80'
 TIME_MIN = 5
 TIME_MAX = 30
 
