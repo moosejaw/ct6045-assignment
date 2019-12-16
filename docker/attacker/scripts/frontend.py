@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import time
 import threading
 import subprocess
@@ -25,6 +26,9 @@ def runSlowloris():
     '''
     Runs the slowloris script in a subprocess.
     The slowloris uses 5 sockets.
+
+    The slowloris script has some default output which we will redirect
+    to /dev/null to keep docker container logs clean.
     '''
     printRunningFunction('slowloris')
     commands = ['python3',
@@ -33,14 +37,14 @@ def runSlowloris():
         '5',
         'http://target/'
     ]
-    proc     = subprocess.Popen(commands, stdout='/dev/null')
+    proc     = subprocess.Popen(commands, stdout=os.devnull)
     proc.communicate()
     time.sleep(TIME_TO_RUN)
     proc.kill()
 
 def runDdos():
     '''Runs the DDoS attack script.'''
-    printRunningFucntion('ddos')
+    printRunningFunction('ddos')
     commands = ['./ddos.py']
     proc     = subprocess.Popen(commands)
     proc.communicate()
