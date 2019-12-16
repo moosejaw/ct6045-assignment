@@ -18,11 +18,15 @@ TIME_TO_RUN = 3600 # Set time to let threads run in seconds before killing them
 # - ddos.py - a script designed to simulate a DDoS attack by sending a high
 # volume of packets.
 
+def printRunningFunction(func):
+    print(f'Running the {func} function')
+
 def runSlowloris():
     '''
     Runs the slowloris script in a subprocess.
     The slowloris uses 5 sockets.
     '''
+    printRunningFunction('slowloris')
     commands = ['python3',
         './slowloris/slowloris.py',
         '-s',
@@ -36,6 +40,7 @@ def runSlowloris():
 
 def runDdos():
     '''Runs the DDoS attack script.'''
+    printRunningFucntion('ddos')
     commands = ['./ddos.py']
     proc     = subprocess.Popen(commands)
     proc.communicate()
@@ -44,6 +49,7 @@ def runDdos():
 
 def runNormalTraffic():
     '''Runs the script to simulate normal traffic.'''
+    printRunningFunction('normal traffic')
     commands = ['./normal_traffic.py']
     proc     = subprocess.Popen(commands)
     proc.communicate()
