@@ -13,7 +13,7 @@ Now you can launch the Docker containers. `cd` to the root of this repository an
 sudo docker-compose up -d
 ```
 
-You can verify the containers are running by running:
+You can verify the containers are up by running:
 
 ```bash
 sudo docker-compose ps
