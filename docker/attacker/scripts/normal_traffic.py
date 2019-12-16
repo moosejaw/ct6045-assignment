@@ -13,7 +13,6 @@ TIME_MAX = 30
 # as normal using Python's built-in urllib library. The request is opened and
 # closed as normal.
 if __name__ == '__main__':
-    with open('reqs.txt', 'w') as f:
     while True:
         # Pause for a random time in the given range
         time.sleep(random.randrange(TIME_MIN, TIME_MAX))
