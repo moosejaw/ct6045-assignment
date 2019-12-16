@@ -33,7 +33,7 @@ def runSlowloris():
         '5',
         'http://target/'
     ]
-    proc     = subprocess.Popen(commands)
+    proc     = subprocess.Popen(commands, stdout='/dev/null')
     proc.communicate()
     time.sleep(TIME_TO_RUN)
     proc.kill()
@@ -58,6 +58,7 @@ def runNormalTraffic():
 
 
 if __name__ == '__main__':
+    # Get functions to run and execute a thread for each
     functions = [runSlowloris, runDdos, runNormalTraffic]
     for function in functions:
         thread = threading.Thread(target=function)
