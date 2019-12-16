@@ -2,7 +2,7 @@
 import socket, os
 
 # Tuple containing the target address and port
-TARGET = ('http://target/', 80)
+TARGET = ('target', 80)
 
 # Python script designed to simulate a DDoS attack.
 if __name__ == '__main__':
