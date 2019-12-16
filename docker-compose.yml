@@ -7,7 +7,7 @@ services:
     expose:
       - "8080"
     restart: always
-    container_name: server
+    container_name: target
 
   attacker:
     build:
