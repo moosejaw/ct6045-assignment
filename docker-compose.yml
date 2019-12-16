@@ -12,6 +12,6 @@ services:
   attacker:
     build:
       context: docker/attacker/
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     restart: always
     container_name: attacker
