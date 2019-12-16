@@ -5,7 +5,7 @@ services:
       context: docker/server/
       dockerfile: Dockerfile
     expose:
-      - "8080"
+      - "80"
     restart: always
     container_name: target
 
