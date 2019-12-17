@@ -1,3 +1,6 @@
+# Introduction
+This repository contains the supplementary code for the CT6045 assignment. Instructions on how to run each piece of code are available in this file. You should read the sections of this file in order, as one section may depend on you having run another piece of code from a previous section.
+
 # Setting up the virtual network
 ## Installing Docker
 The virtual network runs in Docker containers. There are two containers in total. One is for running the Apache web server with a dummy web page and the other is for running the traffic scripts.
