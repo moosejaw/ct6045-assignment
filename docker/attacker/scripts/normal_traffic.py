@@ -13,6 +13,8 @@ TIME_MAX = 30
 # as normal using Python's built-in urllib library. The request is opened and
 # closed as normal.
 if __name__ == '__main__':
+    # Wait a few seconds for the target container to spin up
+    time.sleep(10)
     while True:
         # Pause for a random time in the given range
         time.sleep(random.randrange(TIME_MIN, TIME_MAX))
