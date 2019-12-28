@@ -1,6 +1,20 @@
 # Introduction
 This repository contains the supplementary code for the CT6045 assignment. Instructions on how to run each piece of code are available in this file. You should read the sections of this file in order, as one section may depend on you having run another piece of code from a previous section.
 
+# Preparing the dataset
+You should ensure that the dataset is present in a `dataset/` folder in the root of this project directory.
+
+First, you need to run `preprocessing.py`. This is a Python script which processes each file in multiple threads. Comments about specific functionality are available in the Python script itself.
+
+You can run the script by ensuring it has execute permissions and running:
+```bash
+./preprocessing.py
+```
+
+You should see a message saying `Done!` if the script has executed successfully.
+
+The newly-processed `.csv` files are located in a folder named `output/` relative to the root of this project directory.
+
 # Setting up the virtual network
 ## Installing Docker
 The virtual network runs in Docker containers. There are two containers in total. One is for running the Apache web server with a dummy web page and the other is for running the traffic scripts.
