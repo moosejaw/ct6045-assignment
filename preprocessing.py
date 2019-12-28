@@ -95,7 +95,7 @@ if __name__ == '__main__':
         exists.')
         pass
     except OSError as e:
-        print(f'Could not create a folder for the output (e). Create the \
+        print(f'Could not create a folder for the output {e}. Create the \
         folder manually and try again.')
 
     # Start a new thread for each .csv file and process them
