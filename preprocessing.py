@@ -55,6 +55,10 @@ def processFile(path, cols, keep_cols):
     # Go through each column and rename them
     renamed_cols = [processColumnName(col) for col in cols]
 
+    # Generate a list of columns to be kept as strings
+    cols_as_strings = [col for col in renamed_cols if \
+        col not in cols_to_convert]
+
     # As the .csv files are large we will read them in chunks,
     # process them on the fly and output them to new .csv files
     # as specified by the output_path variable
@@ -65,9 +69,15 @@ def processFile(path, cols, keep_cols):
             # with the list generated earlier
             chunk.columns = renamed_cols
 
-            # Start by converting the specified columns into floats
+            # Remove NaNs
+            chunk = chunk.dropna()
+
+            # Now convert the specified columns into floats
             for column in cols_to_convert:
                 chunk[column] = chunk[column].astype(float)
+            # Then the specified columns into strings
+            for column in cols_as_strings:
+                chunk[column] = chunk[column].astype(str)
 
             # Convert labels to 0 or 1 depending on whether or not they are
             # benign or malicious.
@@ -80,7 +90,7 @@ def processFile(path, cols, keep_cols):
             continue
 
 if __name__ == '__main__':
-    print('Now processing the .csv files. This will take a while.')
+    print('Now processing the .csv files. This will take a while...')
 
     # Load the .csv files in the dataset folder into a list
     csv_files = [os.path.join(DATASET_PATH, i) for i in \
