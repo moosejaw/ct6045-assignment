@@ -229,6 +229,6 @@ if __name__ == '__main__':
         try:
             f = open(os.path.join(PAGERANK_OUTPUT_PATH, p), 'w')
             for k in output[1].keys():
-                f.writeline(str(k))
+                f.write(f'{str(k)}\n')
         except Exception as e:
             print(f'An error occured when trying to write output: {e}')
