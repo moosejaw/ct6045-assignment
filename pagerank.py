@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-This script runs the code behind the descriptive analytics section of the
+This script runs the code behind the pagerank section of the
 assignment.
 
 There are several things we look at here:
@@ -8,12 +8,7 @@ There are several things we look at here:
 1. Firstly, we take a sample of a dataframe from each file. The sample size is
    specified in a global variable.
 
-2. Second, we collect counts of each unique Source IP/Port and corresponding
-   destination IP/Port and create a graph analysis of the top 5. The graph
-   shows the travel of a packet from Source IP -> Source Port -> Dest IP ->
-   Dest Port.
-
-3. Thirdly, we run PageRank to discover the most influential sources and
+2. Thirdly, we run PageRank to discover the most influential sources and
    destinations. PageRank gathers a probabailistic eigenvector of the unique
    source/destination pairs and those with the highest probability are
    significant:
@@ -29,12 +24,15 @@ import pandas as pd
 from threading import Thread
 from modules.terminal_colour import Color
 
-FILES_PATH          = 'output/'
-COLUMNS_TO_PAGERANK = ['source_ip', 'destination_ip']
-PAGERANK_RESULTS    = [] # Do not modify
-SAMPLING_ITERATIONS = 5
-SAMPLE_SIZE         = 5000
-COLOUR              = Color()
+FILES_PATH           = 'output/'
+PAGERANK_OUTPUT_PATH = os.path.join(FILES_PATH, 'pageranks')
+COLUMNS_TO_PAGERANK  = ['source_ip', 'destination_ip']
+PAGERANK_RESULTS     = [] # Do not modify
+PAGERANK_OUTPUTS     = [] # Do not modify
+SAMPLING_ITERATIONS  = 5
+RANDOM_SEEDS         = [i for i in range(SAMPLING_ITERATIONS)]
+SAMPLE_SIZE          = 5000
+COLOUR               = Color()
 
 def countConnections(df, column):
     '''
@@ -101,7 +99,7 @@ def getTopValues(d, size):
                 larger = False
     return top
 
-def calculatePageRank(file, column):
+def calculatePageRank(file, column, seed):
     '''
     Calculates the PageRank for the unique entries in a given column.
     This function calls the other functions above it, as it is designed
@@ -109,7 +107,7 @@ def calculatePageRank(file, column):
     '''
     # Start by loading a sample of the file into a dataframe
     df = pd.read_csv(file, encoding='latin')\
-        .sample(n=SAMPLE_SIZE)
+        .sample(n=SAMPLE_SIZE, random_state=seed)
 
     # For the source ip column, filter out traffic coming from our network
     # so that we can find the most suspicious external IPs
@@ -176,7 +174,7 @@ def consolidatePageRanks(column):
     print(f'The top average PR values from the samples of column {column} are:')
     pp.pprint(top_ten)
     COLOUR.reset()
-
+    PAGERANK_OUTPUTS.append((column, top_ten))
 
 if __name__ == '__main__':
     # Quick sanity check to make sure that the processed .csv files are in the
@@ -208,12 +206,29 @@ if __name__ == '__main__':
         COLOUR.reset()
 
         # Make threads to sample each file
-        for iteration in range(SAMPLING_ITERATIONS):
+        for seed in range(RANDOM_SEEDS):
             for file in files:
                 proc = Thread(target=calculatePageRank,
-                    args=[file, column])
+                    args=[file, column, seed])
                 threads.append(proc)
                 proc.start()
                 for thread in threads: thread.join()
         consolidatePageRanks(column)
         PAGERANK_RESULTS = []
+
+    # Now we will write the PageRank outputs to text files in the output
+    # folder so that we can build the graph analysis from there.
+    try:
+        os.mkdir(PAGERANK_OUTPUT_PATH)
+    except FileExistsError:
+        pass
+    except Exception as e:
+        print(f'An error occured when trying to make the output folder {e}')
+    for output in PAGERANK_OUTPUTS:
+        p = f'{output[0]}.txt'
+        try:
+            f = open(os.path.join(PAGERANK_OUTPUT_PATH, p), 'w')
+            for k in output[1].keys():
+                f.writeline(str(k))
+        except Exception as e:
+            print(f'An error occured when trying to write output: {e}')
