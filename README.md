@@ -1,6 +1,15 @@
 # Introduction
 This repository contains the supplementary code for the CT6045 assignment. Instructions on how to run each piece of code are available in this file. You should read the sections of this file in order, as one section may depend on you having run another piece of code from a previous section.
 
+# Installing Python requirements
+There are several requirements which this project needs in order to run. You can download them all at once by simply running:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+And the requirements should be installed for you automatically.
+
 # Preparing the dataset
 You should ensure that the dataset is present in a `dataset/` folder in the root of this project directory.
 
@@ -14,6 +23,15 @@ You can run the script by ensuring it has execute permissions and running:
 You should see a message saying `Done!` if the script has executed successfully.
 
 The newly-processed `.csv` files are located in a folder named `output/` relative to the root of this project directory.
+
+# Running Descriptive Analytics
+Descriptive analytics are discussed in further detail in the report. You can run the descriptive analytics code yourself by running:
+
+```bash
+./descriptive_analytics.py
+```
+
+**You must do this after you have run `preprocessing.py`.**
 
 # Setting up the virtual network
 ## Installing Docker
