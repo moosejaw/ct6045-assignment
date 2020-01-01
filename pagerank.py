@@ -206,7 +206,7 @@ if __name__ == '__main__':
         COLOUR.reset()
 
         # Make threads to sample each file
-        for seed in range(RANDOM_SEEDS):
+        for seed in RANDOM_SEEDS:
             for file in files:
                 proc = Thread(target=calculatePageRank,
                     args=[file, column, seed])
