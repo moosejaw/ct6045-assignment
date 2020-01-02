@@ -22,6 +22,7 @@ import random
 import numpy as np
 import pandas as pd
 from threading import Thread
+import modules.common_functions
 from modules.terminal_colour import Color
 
 FILES_PATH           = 'output/'
@@ -79,26 +80,6 @@ def getEigenvalue(total):
     '''
     return 1 / total
 
-def getTopValues(d, size):
-    '''
-    Returns the largest key-value pairs in a given dict. Output is specified
-    by the size arg.
-    '''
-    top = {}
-    for key in d.keys():
-        if not top or len(top.keys()) < size:
-            top[key] = d[key]
-        else:
-            larger = False
-            for k in top.keys():
-                if d[key] > top[k]:
-                    larger = True
-            if larger:
-                top[key] = d[key]
-                del top[min(top, key=lambda x: top[x])]
-                larger = False
-    return top
-
 def calculatePageRank(file, column, seed):
     '''
     Calculates the PageRank for the unique entries in a given column.
@@ -110,7 +91,7 @@ def calculatePageRank(file, column, seed):
         .sample(n=SAMPLE_SIZE, random_state=seed)
 
     # For the source ip column, filter out traffic coming from our network
-    # so that we can find the most suspicious external IPs
+    # so that we can find the most suspicious *external* IPs
     if column == 'source_ip':
         df = df[~df[column].str.contains('192.168')]
 
@@ -127,7 +108,7 @@ def calculatePageRank(file, column, seed):
 
     # Now we'll take the top 10 PageRanks and add them to the PAGERANK_RESULTS
     # variable
-    top = getTopValues(counts, 10)
+    top = modules.common_functions.getTopValues(counts, 10)
     PAGERANK_RESULTS.append(top)
 
     #COLOUR.setGreenText()
@@ -167,7 +148,7 @@ def consolidatePageRanks(column):
     for pr in avgs.keys():
         avgs[pr] = sum(avgs[pr]) / len(avgs[pr])
 
-    top_ten = getTopValues(avgs, 10)
+    top_ten = modules.common_functions.getTopValues(avgs, 10)
 
     COLOUR.setGreenText()
     pp = pprint.PrettyPrinter(indent=4)
@@ -212,7 +193,7 @@ if __name__ == '__main__':
                     args=[file, column, seed])
                 threads.append(proc)
                 proc.start()
-                for thread in threads: thread.join()
+            for thread in threads: thread.join()
         consolidatePageRanks(column)
         PAGERANK_RESULTS = []
 
