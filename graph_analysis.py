@@ -149,7 +149,7 @@ def generateGraphs():
         # Next, we'll convert the verts and edges arrays into Spark dataframes
         # so that we can load them into GraphFrames
         verts = SPARK.createDataFrame(verts, ['id', 'ip_address'])
-        edges = SPARK.createDataFrame(edges, ['src', 'dest', 'wgt'])
+        edges = SPARK.createDataFrame(edges, ['src', 'dst', 'wgt'])
 
         # Then we'll create the GraphFrames object, look at the edges, verts
         # and degrees, then run PageRank.
