@@ -31,6 +31,15 @@ GRAPH_DATA  = {k: [] for k in GRAPH_DIRS}
 SPARK       = SparkSession.builder.appName('PacketRouteGraph').getOrCreate()
 SPARK.sparkContext.setLogLevel('ERROR')
 
+def getWeight(wgt):
+    '''Returns a weight string based on a given weight number.'''
+    if wgt < 100:
+        return 'low'
+    elif wgt < 1000:
+        return 'medium'
+    else:
+        return 'high'
+
 def getSampleFromFile(file, seed):
     '''Returns a sample dataframe from a given file.'''
     return pd.read_csv(file, encoding='latin', \
@@ -133,7 +142,7 @@ def generateGraphs():
         ids   = {}
         id    = 1
         for key in routes.keys():
-            weight = routes[key] # Get the weight from the dict value
+            weight = getWeight(routes[key]) # Get the weight from the dict value
             ips_from_route = (key.split('/')[1], key.split('/')[2])
             for ip in ips_from_route:
                 # Create a new ID for the IP address if it hasn't appeared yet
@@ -149,7 +158,7 @@ def generateGraphs():
         # Next, we'll convert the verts and edges arrays into Spark dataframes
         # so that we can load them into GraphFrames
         verts = SPARK.createDataFrame(verts, ['id', 'ip_address'])
-        edges = SPARK.createDataFrame(edges, ['src', 'dst', 'wgt'])
+        edges = SPARK.createDataFrame(edges, ['src', 'dst', 'count'])
 
         # Then we'll create the GraphFrames object, look at the edges, verts
         # and degrees, then run PageRank.
@@ -161,6 +170,7 @@ def generateGraphs():
         print('Graph degrees:')
         graph.degrees.show()
 
+        print('Performing PageRank on the graph:')
         pr = graph.pageRank(resetProbability=0.15, tol=0.01)
         print('Graph PageRank vertices:')
         pr.vertices.show()
