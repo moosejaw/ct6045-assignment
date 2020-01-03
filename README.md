@@ -24,7 +24,8 @@ You should see a message saying `Done!` if the script has executed successfully.
 
 The newly-processed `.csv` files are located in a folder named `output/` relative to the root of this project directory.
 
-# Running Descriptive Analytics
+# Descriptive Analytics
+## Running Descriptive Analytics
 **You must do this after you have run `preprocessing.py`.**
 Descriptive analytics are discussed in further detail in the report. You can run the descriptive analytics code yourself by running:
 
@@ -32,8 +33,20 @@ Descriptive analytics are discussed in further detail in the report. You can run
 ./descriptive_analytics.py
 ```
 
-# PageRank and Graph Analysis
+## PageRank
+The PageRank Python script contains a derived version of PageRank which assigns a probability score to significant IP addresses in the dataset. Run it using the below command:
 
+```bash
+./pagerank.py
+```
+
+## Graph Analysis
+The Graph Analysis script takes the results of the PageRank script (which determined the most significant IP addresses in the dataset samples) and creates a Graph of that data, which therefore indicates the IP addresses which saw the most traffic. It also performs (true) PageRank in order to assign true significance based on the data subset.
+
+To do this, run:
+```bash
+./graph_analysis.py
+```
 
 # Setting up the virtual network
 ## Installing Docker
