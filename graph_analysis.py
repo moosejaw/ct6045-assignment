@@ -29,6 +29,7 @@ GRAPH_DATA  = {k: [] for k in GRAPH_DIRS}
 
 # Create the SparkSession
 SPARK       = SparkSession.builder.appName('PacketRouteGraph').getOrCreate()
+SPARK.sparkContext.setLogLevel('ERROR')
 
 def getSampleFromFile(file, seed):
     '''Returns a sample dataframe from a given file.'''
@@ -167,9 +168,6 @@ def generateGraphs():
         pr.edges.show()
 
 if __name__ == '__main__':
-    # Turn off logs from pyspark to clean up output
-    SPARK.context.setLogLevel('ERROR')
-
     # First, begin by creating new folders for the graph outputs
     try:
         os.mkdir(OUTPUT_DIR)
