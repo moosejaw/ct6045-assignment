@@ -13,6 +13,7 @@ import os
 import numpy as np
 import pandas as pd
 from threading import Thread
+import modules.common_functions
 from modules.discriminator import Discriminator
 
 DATASET_PATH = 'dataset/' # Change this variable if you need to
@@ -49,11 +50,12 @@ def processFile(path, cols, keep_cols):
     output_path = path.replace(DATASET_PATH, OUTPUT_PATH)
 
     # Generate a list of the columns to be converted to floats
-    cols_to_convert = [processColumnName(col) for col in cols \
-        if col not in keep_cols]
+    cols_to_convert = [modules.common_functions.processColumnName(col) for col \
+        in cols if col not in keep_cols]
 
     # Go through each column and rename them
-    renamed_cols = [processColumnName(col) for col in cols]
+    renamed_cols = [modules.common_functions.processColumnName(col) for col \
+        in cols]
 
     # Generate a list of columns to be kept as strings
     cols_as_strings = [col for col in renamed_cols if \
@@ -101,8 +103,6 @@ if __name__ == '__main__':
     try:
         os.mkdir(OUTPUT_PATH)
     except FileExistsError:
-        print('Tried to create a folder for the output path but it already \
-        exists.')
         pass
     except OSError as e:
         print(f'Could not create a folder for the output {e}. Create the \
