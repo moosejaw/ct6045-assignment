@@ -17,3 +17,19 @@ def getTopValues(d, size):
                 del top[min(top, key=lambda x: top[x])]
                 larger = False
     return top
+
+def processColumnName(column):
+    """
+    Processes a column name from the .csv file, removing leading
+    whitespace, removing capitalisation and replacing whitespace with
+    an underscore.
+
+    Inputs:
+        - column: string containing the column name
+    Outputs:
+        string containing the processed column name
+    """
+    column = column.lower()
+    column = column.strip()
+    column = column.replace(' ', '_')
+    return column
