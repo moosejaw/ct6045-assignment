@@ -3,9 +3,11 @@
 This scripts creates a Support Vector Machine, trained on the columns returned
 from the `feature_reduction.py` script.
 '''
+from pyspark import StreamingContext
 from pyspark.ml.linalg import Vectors
 from pyspark.sql import Row, SparkSession
-from pyspark.ml.classification import LinearSVC
+from pyspark.mllib.regression import LabeledPoint
+from pyspark.mllib.classification import SVMWithSGD
 
 import os
 import pprint
@@ -61,8 +63,8 @@ if __name__ == '__main__':
     for file in files:
        for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=columns):
         chunk = chunk.reindex(columns=sorted(chunk.columns))
-        rdd = sc.parallelize([Row(label=row['label'],
-            features=Vectors.dense([float(e) for e in row.drop(columns=['label']).to_numpy().tolist()])) \
+        rdd = sc.parallelize([LabeledPoint(row['label'],
+            row.drop(columns=['label']).to_numpy())) \
             for i, row in chunk.iterrows()])
         data = sc.union([data, rdd])
 
@@ -80,11 +82,12 @@ if __name__ == '__main__':
         COLOUR.setBlueText()
         print(f'Training the model to be tested on group {group_i}...')
         COLOUR.reset()
+        
         # We'll take splits[x] as the test data and use the rest as training
         train_data = sc.union([data[i] for i in range(len(data)) if i != group_i])
 
         # Declare an SVM and fit it to the training data
-        model = LinearSVC().fit(train_data.toDF())
+        model = SVMWithSGD.train(train_data, iterations=10)
 
         # Once fit, we will test it on our holdout group and record the
         # TPs, TNs, FPs and FNs in a dict
@@ -99,8 +102,7 @@ if __name__ == '__main__':
 
         for test_row in data[group_i].collect():
             label = test_row.label
-            pred  = model.transform(sc.parallelize([Row(\
-                features=test_row.features)]).toDF()).head().prediction
+            pred  = model.predict(test_row.features)
             scorecard['len'] += 1
 
             # Get whether the prediction was TP, FP, TN, FN
