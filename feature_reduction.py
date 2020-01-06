@@ -23,7 +23,6 @@ matplotlib.use('Agg')
 
 OUTPUT_BASE_DIR     = 'output'
 OUTPUT_DIR          = os.path.join(OUTPUT_BASE_DIR, 'features')
-OUTPUT_DATA_DIR     = os.path.join(OUTPUT_DIR, 'data')
 OUTPUT_MATRIX_DIR   = os.path.join(OUTPUT_DIR, 'matrix')
 SAMPLING_ITERATIONS = 25
 SAMPLE_SIZE         = 2500
@@ -53,7 +52,6 @@ if __name__ == '__main__':
     # Start by creating the output directory
     try:
         os.mkdir(OUTPUT_DIR)
-        os.mkdir(OUTPUT_DATA_DIR)
         os.mkdir(OUTPUT_MATRIX_DIR)
     except FileExistsError:
         pass
