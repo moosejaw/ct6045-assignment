@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+This script is designed to emulate normal web traffic. Therefore, it will
+request the server page in a randomly-assigned interval. The request is sent
+as normal using Python's built-in urllib library. The request is opened and
+closed as normal.
 import time
 import random
 from urllib import request
@@ -8,10 +12,6 @@ TARGET   = 'http://target/'
 TIME_MIN = 5
 TIME_MAX = 30
 
-# This script is designed to emulate normal web traffic. Therefore, it will
-# request the server page in a randomly-assigned interval. The request is sent
-# as normal using Python's built-in urllib library. The request is opened and
-# closed as normal.
 if __name__ == '__main__':
     # Wait a few seconds for the target container to spin up
     time.sleep(10)
