@@ -36,7 +36,7 @@ if __name__ == '__main__':
     spark = SparkSession.builder\
        .appName("Packet Classifier")\
        .getOrCreate()
-    sc    = spark.sparkContext
+    sc    = spark.sparkContext()
     sc.setLogLevel('ERROR')
 
     # Start by enumerating the files in the output directory
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     # for each split we have made - i.e. k times. The other splits will be used
     # as the training data.
     COLOUR.setBlueText()
-    print(f'Splitting the RDD into {K} groups as specified by K...\n')
+    print(f'Splitting the RDD into {K} groups as specified by K...')
     COLOUR.reset()
     data = data.randomSplit(weights=[1/K for i in range(K)], seed=SEED)
     scores = []
@@ -86,8 +86,7 @@ if __name__ == '__main__':
         print(f'Training the model to be tested on group {group_i}...')
         COLOUR.reset()
         # We'll take splits[x] as the test data and use the rest as training
-        train_data = sc.union([data[i] for i in range(len(data))\
-            if i != group_i])
+        train_data = sc.union([data[i] for i in range(len(data)) if i != group_i])
 
         # Declare an SVM and fit it to the training data
         model = LinearSVC().fit(train_data.toDF())
