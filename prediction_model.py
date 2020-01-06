@@ -64,7 +64,7 @@ if __name__ == '__main__':
         feats = row.drop(columns=['label'].to_numpy().tolist())
         feats = [float(i) for i in feats]
         rdd = sc.parallelize([Row(label=row['label'],
-            features=Vectors.dense(feats) for i, row in chunk.iterrows()])
+            features=Vectors.dense(feats)) for i, row in chunk.iterrows()])
         data = sc.union([data, rdd])
 
     # Now for the k-fold validaton and creating the model.
