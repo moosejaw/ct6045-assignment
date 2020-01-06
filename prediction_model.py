@@ -3,9 +3,7 @@
 This scripts creates a Support Vector Machine, trained on the columns returned
 from the `feature_reduction.py` script.
 '''
-from pyspark import StreamingContext
-from pyspark.ml.linalg import Vectors
-from pyspark.sql import Row, SparkSession
+from pyspark import SparkContext
 from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.classification import SVMWithSGD
 
@@ -35,11 +33,8 @@ def getSpecificity(true_neg, false_pos):
 
 if __name__ == '__main__':
     # Create the spark session
-    spark = SparkSession.builder\
-       .appName("Packet Classifier")\
-       .getOrCreate()
-    sc    = spark.sparkContext
-    sc.setLogLevel("OFF")
+    sc = SparkContext(appName="Packet Classifier")
+    sc.setLogLevel("ERROR")
 
     # Start by enumerating the files in the output directory
     files = [os.path.join(OUTPUT_DIR, i) for i in os.listdir(OUTPUT_DIR) \
@@ -56,7 +51,7 @@ if __name__ == '__main__':
     data = sc.parallelize([])
 
     # Iterate over each file in chunks, convert the chunk to a dataframe,
-    # then to a formatted Row and append it to the RDD containing all the data.
+    # then to a LabeledPoint and append it to the RDD containing all the data.
     COLOUR.setBlueText()
     print('Collecting the dataset into an RDD...')
     COLOUR.reset()
@@ -82,7 +77,7 @@ if __name__ == '__main__':
         COLOUR.setBlueText()
         print(f'Training the model to be tested on group {group_i}...')
         COLOUR.reset()
-        
+
         # We'll take splits[x] as the test data and use the rest as training
         train_data = sc.union([data[i] for i in range(len(data)) if i != group_i])
 
