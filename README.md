@@ -1,5 +1,5 @@
 # Introduction
-This repository contains the supplementary code for the CT6045 assignment. Instructions on how to run each piece of code are available in this file. You should read the sections of this file in order, as one section may depend on you having run another piece of code from a previous section.
+This repository contains the supplementary code for the CT6045 assignment. Instructions on how to run each piece of code are available in this file. You should read each section of this file in order, as one section may depend on you having run another piece of code from a previous section.
 
 # Installing Python requirements
 There are several requirements which this project needs in order to run. You can download them all at once by simply running:
@@ -24,8 +24,8 @@ You should see a message saying `Done!` if the script has executed successfully.
 
 The newly-processed `.csv` files are located in a folder named `output/` relative to the root of this project directory.
 
-# Descriptive Analytics
-## Running Descriptive Analytics
+# Descriptive analytics
+## Running descriptive analytics
 **You must do this after you have run `preprocessing.py`.**
 Descriptive analytics are discussed in further detail in the report. You can run the descriptive analytics code yourself by running:
 
@@ -40,12 +40,23 @@ The PageRank Python script contains a derived version of PageRank which assigns 
 ./pagerank.py
 ```
 
-## Graph Analysis
+## Graph analysis
 The Graph Analysis script takes the results of the PageRank script (which determined the most significant IP addresses in the dataset samples) and creates a Graph of that data, which therefore indicates the IP addresses which saw the most traffic. It also performs (true) PageRank in order to assign true significance based on the data subset.
 
 To do this, run:
 ```bash
-./graph_analysis.py
+spark-submit --packages graphframes:graphframes:0.6.0-spark2.3-s_2.11 graph_analysis.py
+```
+
+# Predictive analytics
+The Predictive Analytics section comprises the concept of training a model on the dataset in order to classify new incoming data. The first step is to run the feature reduction script which analyses the correlation coefficients of each pair of features within the dataset in order to find the most highly-correlated features.
+
+## Feature selection/reduction
+You will need to run the `feature_reduction.py` script to do this. The script will output two matrix plots to `output/features/matrix`, one containing a heatmap of correlation coefficients of all the features, and the other containing a matrix of the 15 most highly-correlated variables.
+
+Launch the script by running:
+```bash
+./feature_reduction.py
 ```
 
 # Setting up the virtual network
