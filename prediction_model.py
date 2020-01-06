@@ -55,7 +55,9 @@ if __name__ == '__main__':
 
     # Iterate over each file in chunks, convert the chunk to a dataframe,
     # then to a formatted Row and append it to the RDD containing all the data.
+    COLOUR.setBlueText()
     print('Collecting the dataset into an RDD...')
+    COLOR.reset()
     for file in files:
        for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=columns):
         chunk = chunk.reindex(columns=sorted(chunk.columns))
@@ -71,21 +73,28 @@ if __name__ == '__main__':
     # All the splits are output into a list, so we can test the model
     # for each split we have made - i.e. k times. The other splits will be used
     # as the training data.
+    COLOUR.setBlueText()
     print(f'Splitting the RDD into {K} groups as specified by K...\n')
+    COLOR.reset()
     data = data.randomSplit(weights=[1/K for i in range(K)], seed=SEED)
     scores = []
 
-    for group_i in range(data):
+    for group_i in range(len(data)):
+        COLOUR.setBlueText()
         print(f'Training the model to be tested on group {group_i}...')
+        COLOUR.reset()
         # We'll take splits[x] as the test data and use the rest as training
-        train_data = sc.union([data[i] for i in range(data) if i != group_i])
+        train_data = sc.union([data[i] for i in range(len(data))\
+            if i != group_i])
 
         # Declare an SVM and fit it to the training data
         model = LinearSVC().fit(train_data.toDF())
 
         # Once fit, we will test it on our holdout group and record the
         # TPs, TNs, FPs and FNs in a dict
+        COLOUR.setBlueText()
         print('Checking predictions made on the holdout group...')
+        COLOUR.reset()
         scorecard = {'true_pos': 0,
             'false_pos': 0,
             'true_neg': 0,
@@ -94,8 +103,8 @@ if __name__ == '__main__':
 
         for test_row in data[group_i].collect():
             label = test_row.label
-            pred  = model.transform(sc.parallelize([Row[test_row.features]])\
-                .toDF()).head().prediction
+            pred  = model.transform(sc.parallelize([Row(\
+                features=test_row.features)]).toDF()).head().prediction
             scorecard['len'] += 1
 
             # Get whether the prediction was TP, FP, TN, FN
@@ -110,7 +119,7 @@ if __name__ == '__main__':
 
             # Print the scorecard, append it to the scores array and move to
             # next iteration
-            COLOR.setGreenText()
+            COLOR.setBlueText()
             print(f'The scores for iteration {group_i} are:')
             pp = pprint.PrettyPrinter(indent=4)
             pp.pprint(scorecard)
@@ -143,3 +152,4 @@ if __name__ == '__main__':
         print(f'Sensitivity : {sens}')
         spec = getSpecificity(scorecard['true_neg'], scorecard['false_pos'])
         print(f'Specificity : {spec}')
+        COLOR.reset()
