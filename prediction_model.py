@@ -33,7 +33,7 @@ def getSpecificity(true_neg, false_pos):
 
 if __name__ == '__main__':
     # Create the spark session
-    spark = SparkSession.builder. \
+    spark = SparkSession.builder\
        .appName("Packet Classifier")
        .getOrCreate()
     sc    = spark.sparkContext
