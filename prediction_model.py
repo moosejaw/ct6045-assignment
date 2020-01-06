@@ -61,10 +61,8 @@ if __name__ == '__main__':
     for file in files:
        for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=columns):
         chunk = chunk.reindex(columns=sorted(chunk.columns))
-        rdd = sc.parallelize([Row(\
-            label=row['label'],
-            features=Vectors.dense([float(e) for e in \
-            row.drop(columns=['label']).to_numpy().tolist()])) \
+        rdd = sc.parallelize([Row(label=row['label'],
+            features=Vectors.dense([float(e) for e in row.drop(columns=['label']).to_numpy().tolist()])) \
             for i, row in chunk.iterrows()])
         data = sc.union([data, rdd])
 
@@ -75,9 +73,6 @@ if __name__ == '__main__':
     # All the splits are output into a list, so we can test the model
     # for each split we have made - i.e. k times. The other splits will be used
     # as the training data.
-    COLOUR.setBlueText()
-    print(f'Splitting the RDD into {K} groups as specified by K...')
-    COLOUR.reset()
     data = data.randomSplit(weights=[1/K for i in range(K)], seed=SEED)
     scores = []
 
