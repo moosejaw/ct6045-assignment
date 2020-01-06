@@ -7,7 +7,7 @@ import os
 import subprocess
 
 HADOOP_BIN_DIR = '/usr/local/hadoop/bin'
-HDFS_DATA_DIR  = 'user/hduser/data'
+HDFS_DATA_DIR  = '/user/hduser/data'
 
 if __name__ == '__main__':
     # Get files
@@ -23,6 +23,7 @@ if __name__ == '__main__':
         '-p',
         HDFS_DATA_DIR
     ])
+    proc.communicate()
 
     # Call a subprocess for each file, copying it across
     for file in files:
@@ -30,8 +31,8 @@ if __name__ == '__main__':
         commands = [
             f'{HADOOP_BIN_DIR}/hdfs',
             'dfs',
-            '-copyFromLocal'
-            f'./{file}',
+            '-copyFromLocal '
+            f'./{file} ',
             f'{HDFS_DATA_DIR}/{hdfs_fname}'
         ]
         proc = subprocess.Popen(commands)
