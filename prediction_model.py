@@ -61,7 +61,7 @@ if __name__ == '__main__':
         chunk = chunk.reindex(columns=sorted(chunk.columns))
         rdd = sc.parallelize([Row(label=row['label'],
             features=Vectors.dense(row.drop(columns=['label']).to_numpy()\
-                .tolist())) for row in chunk.iterrows()])
+                .tolist())) for i, row in chunk.iterrows()])
         data = sc.union([data, rdd])
 
     # Now for the k-fold validaton and creating the model.
