@@ -57,7 +57,7 @@ if __name__ == '__main__':
     # then to a formatted Row and append it to the RDD containing all the data.
     COLOUR.setBlueText()
     print('Collecting the dataset into an RDD...')
-    COLOR.reset()
+    COLOUR.reset()
     for file in files:
        for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=columns):
         chunk = chunk.reindex(columns=sorted(chunk.columns))
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     # as the training data.
     COLOUR.setBlueText()
     print(f'Splitting the RDD into {K} groups as specified by K...\n')
-    COLOR.reset()
+    COLOUR.reset()
     data = data.randomSplit(weights=[1/K for i in range(K)], seed=SEED)
     scores = []
 
@@ -119,11 +119,11 @@ if __name__ == '__main__':
 
             # Print the scorecard, append it to the scores array and move to
             # next iteration
-            COLOR.setBlueText()
+            COLOUR.setBlueText()
             print(f'The scores for iteration {group_i} are:')
             pp = pprint.PrettyPrinter(indent=4)
             pp.pprint(scorecard)
-            COLOR.reset()
+            COLOUR.reset()
             scores.append(scorecard)
 
         # Now we'll get the sum of each score for each iteration and calculate
@@ -138,7 +138,7 @@ if __name__ == '__main__':
                 scorecard[key] += score[key]
 
         # Print the overall scores
-        COLOR.setGreenText()
+        COLOUR.setGreenText()
         pp = pprint.PrettyPrinter(indent=4)
         print('The overall test results for the model are:')
         pp.pprint(scorecard)
@@ -152,4 +152,4 @@ if __name__ == '__main__':
         print(f'Sensitivity : {sens}')
         spec = getSpecificity(scorecard['true_neg'], scorecard['false_pos'])
         print(f'Specificity : {spec}')
-        COLOR.reset()
+        COLOUR.reset()
