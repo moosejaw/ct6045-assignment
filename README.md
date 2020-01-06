@@ -1,8 +1,15 @@
 # Introduction
 This repository contains the supplementary code for the CT6045 assignment. Instructions on how to run each piece of code are available in this file. You should read each section of this file in order, as one section may depend on you having run another piece of code from a previous section.
 
-# Installing Python requirements
-There are several requirements which this project needs in order to run. You can download them all at once by simply running:
+# Pre-requisites
+## Apache Hadoop
+Apache Hadoop must be present on your system. A version of Apache Hadoop compatible with this project can be installed automatically by following the instructions of [this repository.](https://github.com/moosejaw/hadoop-ansible-installer)
+
+## Apache Spark
+You must ensure that you have Apache Spark 2.4 installed. It can be downloaded [here.](https://spark.apache.org/downloads.html)
+
+## Installing Python requirements
+There are several Python requirements which this project needs in order to run. You can download them all at once by simply running:
 
 ```bash
 pip3 install -r requirements.txt
