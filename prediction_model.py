@@ -36,8 +36,8 @@ if __name__ == '__main__':
     spark = SparkSession.builder\
        .appName("Packet Classifier")\
        .getOrCreate()
-    sc    = spark.sparkContext()
-    sc.setLogLevel('ERROR')
+    sc    = spark.sparkContext
+    sc.setLogLevel("OFF")
 
     # Start by enumerating the files in the output directory
     files = [os.path.join(OUTPUT_DIR, i) for i in os.listdir(OUTPUT_DIR) \
