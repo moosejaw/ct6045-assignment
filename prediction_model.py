@@ -17,7 +17,7 @@ COLOUR      = Color()
 OUTPUT_DIR  = 'output'
 FEATUR_DIR  = os.path.join(OUTPUT_DIR, 'features')
 COLUMNS_TO_USE_FILE = os.path.join(FEATUR_DIR, 'top_features.txt')
-CHUNK_SIZE  = 25000
+CHUNK_SIZE  = 4096
 SEED        = 12345
 K           = 10 # Value of k used in k-fold validation
 
