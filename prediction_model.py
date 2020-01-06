@@ -29,7 +29,7 @@ def getSensitivity(true_pos, false_neg):
     return true_pos / (true_pos + false_neg)
 
 def getSpecificity(true_neg, false_pos):
-    return true_neg / (true_neg _ false_pos)
+    return true_neg / (true_neg + false_pos)
 
 if __name__ == '__main__':
     # Create the spark session
