@@ -23,7 +23,7 @@ K           = 10 # Value of k used in k-fold validation
 
 def getAccuracy(num_correct, num_wrong):
     '''Returns the accuracy from the given parameters.'''
-    return 0
+    return num_correct / (num_correct + num_wrong)
 
 def getSensitivity(true_pos, false_neg):
     return true_pos / (true_pos + false_neg)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
        for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=columns):
         chunk = chunk.reindex(columns=sorted(chunk.columns))
         rdd = sc.parallelize([LabeledPoint(row['label'],
-            row.drop(columns=['label']).to_numpy())) \
+            row.drop(columns=['label']).to_numpy()) \
             for i, row in chunk.iterrows()])
         data = sc.union([data, rdd])
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 
         # Get the stats and print them
         acc = getAccuracy(scorecard['true_pos'] + scorecard['true_neg'],
-            scorecard['false_pos'] + scorecard['false_neg'])
+            scorecard['len'])
         print(f'Accuracy    : {acc}')
         sens = getSensitivity(scorecard['true_pos'], scorecard['false_neg'])
         print(f'Sensitivity : {sens}')
