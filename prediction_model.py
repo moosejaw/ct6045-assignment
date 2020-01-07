@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
-    model = SVMWithSGD.train(training)
+    model = LogisticRegressionModel.train(training)
 
     # Load the testing data
     testing = sc.textFile('output/features/csv/test/testing_data.csv').map(processLine)
