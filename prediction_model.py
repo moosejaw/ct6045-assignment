@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # Now predict on the testing data
     print('Predicting on the testing data...')
-    model.predictOnValues(testing.map(lambda lp: (lp.label, lp.features))).print()
+    model.predictOnValues(testing.map(lambda lp: (lp.label, lp.features))).pprint()
 
     # Start ssc and await termination
     ssc.start()
