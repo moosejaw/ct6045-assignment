@@ -46,7 +46,7 @@ def getSpecificity(true_neg, false_pos):
 
 if __name__ == '__main__':
     # Create the streaming context
-    ssc = StreamingContext(sc).getOrCreate(CHECKPOINT_DIR, setupStreamContext)
+    ssc = StreamingContext.getOrCreate(CHECKPOINT_DIR, setupStreamContext)
 
     # Read files from HDFS into stream
     data = ssc.textFileStream(DATA_FOLDER).map(lambda line: \
