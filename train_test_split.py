@@ -8,8 +8,8 @@ dataframe and perform the split from there. Then we can clean up by deleting
 the original files.
 '''
 import os
-import sklearn
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 SEED       = 12345
 BASE_DIR   = os.path.join('output', 'features')
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     for file in files:
         data = pd.concat([data, pd.read_csv(file, header=None)])
 
-    train, test = sklearn.model_selection.train_test_split(data,
+    train, test = train_test_split(data,
         test_size=TEST_DATA_FRAC, random_state=SEED)
 
     # Save the training data to training dir
