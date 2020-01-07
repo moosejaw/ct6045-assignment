@@ -49,7 +49,7 @@ if __name__ == '__main__':
     model.trainOn(training)
 
     # Load the testing data
-    testing = ssc.textFile('output/features/csv/test/testing_data.csv').map(processLine)
+    testing = sc.textFile('output/features/csv/test/testing_data.csv').map(processLine)
     testing = ssc.queueStream([testing])
 
     # Now predict on the testing data
