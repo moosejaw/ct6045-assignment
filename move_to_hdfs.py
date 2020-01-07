@@ -28,12 +28,13 @@ if __name__ == '__main__':
 
     # Call a subprocess for each file, copying it across
     for file in files:
-        hdfs_fname = file.split('/')[1]
+        hdfs_fname = file.split('/')
+        hdfs_fname = hdfs_fname[len(hdfs_fname) - 1]
         commands = [
             f'{HADOOP_BIN_DIR}/hdfs',
             'dfs',
             '-copyFromLocal',
-            f'./{file}',
+            f'{CSV_DIR}/{file}',
             f'{HDFS_DATA_DIR}/{hdfs_fname}'
         ]
         proc = subprocess.Popen(commands)
