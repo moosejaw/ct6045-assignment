@@ -30,7 +30,7 @@ def setupStreamContext():
     '''Sets up a new streaming context for spark.'''
     sc = SparkContext(appName="Packet Classifier")
     sc.setLogLevel("ERROR")
-    ssc = StreamingContext(sc)
+    ssc = StreamingContext(sc, 1)
     ssc.checkpoint(CHECKPOINT_DIR)
     return ssc
 
