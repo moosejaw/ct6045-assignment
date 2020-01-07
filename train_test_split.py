@@ -22,11 +22,11 @@ TEST_DATA_FRAC = 0.30 # Fraction of training data will be 1 - this value
 if __name__ == '__main__':
     print('This script will REMOVE the files output by feature_reduction.py. Press ENTER to continue...')
     input()
-    
+
     try:
         os.mkdir(TRAIN_DIR)
         os.mkdir(TEST_DIR)
-    except FileExistError:
+    except FileExistsError:
         pass
 
     data = pd.DataFrame()
