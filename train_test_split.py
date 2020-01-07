@@ -13,7 +13,7 @@ import pandas as pd
 
 SEED       = 12345
 BASE_DIR   = os.path.join('output', 'features')
-FILES_DIR  = os.path.join('output', 'csv')
+FILES_DIR  = os.path.join(BASE_DIR, 'csv')
 TRAIN_DIR  = os.path.join(FILES_DIR, 'train')
 TEST_DIR   = os.path.join(FILES_DIR, 'test')
 
