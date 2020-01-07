@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     # Start ssc and await termination
     ssc.start()
-    ssc.awaitTermination()
+    ssc.stop(stopSparkContext=True, stopGraceFully=True)
 
     # Once fit, we will test it on our holdout group and record the
     # TPs, TNs, FPs and FNs in a dict
