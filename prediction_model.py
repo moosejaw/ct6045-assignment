@@ -48,8 +48,7 @@ if __name__ == '__main__':
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
-    model = SVMWithSGD()
-    model.train(training)
+    model = SVMWithSGD.train(training)
 
     # Load the testing data
     testing = sc.textFile('output/features/csv/test/testing_data.csv').map(processLine)
