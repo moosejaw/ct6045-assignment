@@ -34,7 +34,7 @@ if __name__ == '__main__':
             f'{HADOOP_BIN_DIR}/hdfs',
             'dfs',
             '-copyFromLocal',
-            f'{CSV_DIR}/{file}',
+            f'{file}',
             f'{HDFS_DATA_DIR}/{hdfs_fname}'
         ]
         proc = subprocess.Popen(commands)
