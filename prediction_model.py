@@ -23,8 +23,8 @@ CHUNK_SIZE  = 4096
 SEED        = 12345
 K           = 10 # Value of k used in k-fold validation
 
-CHECKPOINT_DIR = 'hdfs:///user/hduser/checkpoint'
-DATA_FOLDER    = 'hdfs:///user/hduser/data'
+CHECKPOINT_DIR = 'hdfs://127.0.0.1:54310/user/hduser/checkpoint'
+DATA_FOLDER    = 'hdfs://127.0.0.1:54310/user/hduser/data'
 
 def setupStreamContext():
     '''Sets up a new streaming context for spark.'''
