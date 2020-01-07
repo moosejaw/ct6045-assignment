@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     print('Splitting the data into training and testing...')
     for file in files:
-        data = data.concat([data, pd.read_csv(file, header=None)])
+        data = pd.concat([data, pd.read_csv(file, header=None)])
 
     train, test = sklearn.model_selection.train_test_split(data,
         test_size=TEST_DATA_FRAC, random_state=SEED)
