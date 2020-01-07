@@ -30,8 +30,8 @@ if __name__ == '__main__':
         pass
 
     data = pd.DataFrame()
-    files = [os.path.join(FILE_DIR, file) for file in os.listdir(FILES_DIR) \
-        if os.path.isfile(os.path.join(FILE_DIR, file)) \
+    files = [os.path.join(FILES_DIR, file) for file in os.listdir(FILES_DIR) \
+        if os.path.isfile(os.path.join(FILES_DIR, file)) \
         and file.endswith('_new.csv')]
 
     print('Splitting the data into training and testing...')
