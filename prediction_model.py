@@ -25,8 +25,8 @@ K           = 10 # Value of k used in k-fold validation
 
 HDFS_ADDR       = '127.0.0.1:54310'
 CHECKPOINT_DIR  = f'hdfs://{HDFS_ADDR}/user/hduser/checkpoint'
-TRAINING_FOLDER = f'hdfs://{HDFS_ADDR}/user/hduser/data/train'
-TESTING_FOLDER  = f'hdfs://{HDFS_ADDR}/user/hduser/data/test'
+TRAINING_FOLDER = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/train'
+TESTING_FOLDER  = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/test'
 
 def setupStreamContext():
     '''Sets up a new streaming context for spark.'''
