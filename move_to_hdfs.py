@@ -12,8 +12,8 @@ HDFS_DATA_DIR  = '/user/hduser/data'
 
 if __name__ == '__main__':
     # Get files
-    files = [os.path.join('output', file) for file in os.listdir('output') \
-        if os.path.isfile(os.path.join('output', file)) \
+    files = [os.path.join(CSV_DIR, file) for file in os.listdir(CSV_DIR) \
+        if os.path.isfile(os.path.join(CSV_DIR, file)) \
         and file.endswith('_new.csv')]
 
     # Create the data_dir in hdfs
