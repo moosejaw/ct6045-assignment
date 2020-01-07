@@ -23,8 +23,10 @@ CHUNK_SIZE  = 4096
 SEED        = 12345
 K           = 10 # Value of k used in k-fold validation
 
-CHECKPOINT_DIR = 'hdfs://127.0.0.1:54310/user/hduser/checkpoint'
-DATA_FOLDER    = 'hdfs://127.0.0.1:54310/user/hduser/data'
+HDFS_ADDR       = '127.0.0.1:54310'
+CHECKPOINT_DIR  = f'hdfs://{HDFS_ADDR}/user/hduser/checkpoint'
+TRAINING_FOLDER = f'hdfs://{HDFS_ADDR}/user/hduser/data/train'
+TESTING_FOLDER  = f'hdfs://{HDFS_ADDR}/user/hduser/data/test'
 
 def setupStreamContext():
     '''Sets up a new streaming context for spark.'''
@@ -44,24 +46,32 @@ def getSensitivity(true_pos, false_neg):
 def getSpecificity(true_neg, false_pos):
     return true_neg / (true_neg + false_pos)
 
+def processLine(line):
+    return LabeledPoint(label=line.split(',')[0], features=line.split(',')[1:])
+
 if __name__ == '__main__':
     # Create the streaming context
     ssc = StreamingContext.getOrCreate(CHECKPOINT_DIR, setupStreamContext)
 
     # Read files from HDFS into stream
-    data = ssc.textFileStream(DATA_FOLDER).map(lambda line: \
-        LabeledPoint(label=line.split(',')[0],
-        features=line.split(',')[1:]))
-    training, testing = data.randomSplit([0.7, 0.3], seed=SEED)
+    training = ssc.textFileStream(TRAINING_FOLDER).map(processLine)
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
     model = StreamingLogisticRegressionWithSGD(numIterations=10)
     model.setInitialWeights([0 for i in range(COLUMNS)])
+    model.trainOn()
+
+    # Load the testing data
+    testing = ssc.textFileStream(TESTING_FOLDER)
 
     # Now predict on the testing data
     print('Predicting on the testing data...')
-    model.predictOnValues(testing).print()
+    model.predictOnValues(testing.map(lambda lp: (lp.label, lp.features))).print()
+
+    # Start ssc and await termination
+    ssc.start()
+    ssc.awaitTermination()
 
     # Once fit, we will test it on our holdout group and record the
     # TPs, TNs, FPs and FNs in a dict
