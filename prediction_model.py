@@ -4,6 +4,7 @@ This scripts creates a Support Vector Machine, trained on the columns returned
 from the `feature_reduction.py` script.
 '''
 from pyspark import SparkContext
+from pyspark.streaming import StreamingContext
 from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.classification import SVMWithSGD
 
@@ -20,6 +21,15 @@ COLUMNS_TO_USE_FILE = os.path.join(FEATUR_DIR, 'top_features.txt')
 CHUNK_SIZE  = 4096
 SEED        = 12345
 K           = 10 # Value of k used in k-fold validation
+HDFS_FOLDER = '/user/hduser/data'
+
+def setupStreamContext():
+    '''Sets up a new streaming context for spark.'''
+    sc = SparkContext(appName="Packet Classifier")
+    sc.setLogLevel("ERROR")
+    ssc.StreamingContext(sc)
+    ssc.checkpoint(CHECKPOINT_DIR)
+    return ssc
 
 def getAccuracy(num_correct, num_wrong):
     '''Returns the accuracy from the given parameters.'''
@@ -32,9 +42,8 @@ def getSpecificity(true_neg, false_pos):
     return true_neg / (true_neg + false_pos)
 
 if __name__ == '__main__':
-    # Create the spark session
-    sc = SparkContext(appName="Packet Classifier")
-    sc.setLogLevel("ERROR")
+    # Create the streaming context
+    ssc = StreamingContext(sc).getOrCreate(CHECKPOINT_DIR, setupStreamContext)
 
     # Start by enumerating the files in the output directory
     files = [os.path.join(OUTPUT_DIR, i) for i in os.listdir(OUTPUT_DIR) \
