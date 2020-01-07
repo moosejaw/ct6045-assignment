@@ -24,6 +24,7 @@ matplotlib.use('Agg')
 OUTPUT_BASE_DIR     = 'output'
 OUTPUT_DIR          = os.path.join(OUTPUT_BASE_DIR, 'features')
 OUTPUT_MATRIX_DIR   = os.path.join(OUTPUT_DIR, 'matrix')
+OUTPUT_CSV_DIR      = os.path.join(OUTPUT_DIR, 'csv')
 SAMPLING_ITERATIONS = 25
 SAMPLE_SIZE         = 2500
 CORRELATION_THRESH  = 0.6
@@ -54,6 +55,7 @@ if __name__ == '__main__':
     try:
         os.mkdir(OUTPUT_DIR)
         os.mkdir(OUTPUT_MATRIX_DIR)
+        os.mkdir(OUTPUT_CSV_DIR)
     except FileExistsError:
         pass
     except OSError as e:
@@ -148,7 +150,9 @@ if __name__ == '__main__':
     # to use
     print('The output files will now be saved with ONLY their respective features...')
     for file in files:
-        new_fname = file.replace('.csv', '_new.csv')
+        new_fname = file.split('/')
+        new_fname = new_fname[len(new_fname) - 1].replace('.csv', '_new.csv')
+        new_fname = os.path.join(OUTPUT_CSV_DIR, new_fname)
         with open(new_fname, 'w') as output_file:
             for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=features):
                 chunk = chunk.reindex(columns=features)
