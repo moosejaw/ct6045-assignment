@@ -13,7 +13,7 @@ if __name__ == '__main__':
     # Get files
     files = [os.path.join('output', file) for file in os.listdir('output') \
         if os.path.isfile(os.path.join('output', file)) \
-        and file.endswith('.csv')]
+        and file.endswith('_new.csv')]
 
     # Create the data_dir in hdfs
     proc = subprocess.Popen([
