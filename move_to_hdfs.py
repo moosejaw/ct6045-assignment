@@ -29,8 +29,6 @@ if __name__ == '__main__':
         f'{CSV_DIR}',
         f'{HDFS_DATA_DIR}'
     ]
-    hdfs_fname = file.split('/')
-    hdfs_fname = hdfs_fname[len(hdfs_fname) - 1]
     proc = subprocess.Popen(commands)
     proc.communicate()
 
