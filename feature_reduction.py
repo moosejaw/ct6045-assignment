@@ -27,6 +27,7 @@ OUTPUT_MATRIX_DIR   = os.path.join(OUTPUT_DIR, 'matrix')
 SAMPLING_ITERATIONS = 25
 SAMPLE_SIZE         = 2500
 CORRELATION_THRESH  = 0.6
+CHUNK_SIZE          = 4096
 COLOUR              = Color()
 SEEDS               = [i for i in range(SAMPLING_ITERATIONS)]
 COEFFICIENTS        = [] # Do not modify
@@ -132,11 +133,24 @@ if __name__ == '__main__':
 
     # Manually remove the fwd_header_length feature
     del highest_correlated['fwd_header_length']
+    features = sorted([i for i in highest_correlated.keys()])
+    features.insert(0, 'label')
 
     # Save the feature names we want to use to a file so it can be picked up by
     # the predictive analytics script
     try:
         with open(os.path.join(OUTPUT_DIR, TOP_FEATURES_FNAME), 'w') as f:
-            for feature in highest_correlated.keys(): f.write(f'{feature}\n')
+            for feature in features: f.write(f'{feature}\n')
     except Exception as e:
         print(f'An exception occurred when trying to save the top features to a file: {e}')
+
+    # Re-save the training data in order to capture only the columns we want
+    # to use
+    print('The output files will now be saved with ONLY their respective features...')
+    for file in files:
+        new_fname = file.replace('.csv', '_new.csv')
+        with open(new_fname, 'w') as output_file:
+            for chunk in pd.read_csv(path, chunksize=CHUNK_SIZE, usecols=features):
+                chunk = chunk.reindex(columns=features)
+                new_fname.write(chunk.to_csv(index=False, header=False))
+    print('All done!')
