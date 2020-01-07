@@ -60,7 +60,7 @@ if __name__ == '__main__':
     print('Training the regression model...')
     model = StreamingLogisticRegressionWithSGD(numIterations=10)
     model.setInitialWeights([0 for i in range(COLUMNS)])
-    model.trainOn()
+    model.trainOn(training)
 
     # Load the testing data
     testing = ssc.textFileStream(TESTING_FOLDER)
