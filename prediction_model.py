@@ -25,7 +25,7 @@ K           = 10 # Value of k used in k-fold validation
 
 HDFS_ADDR       = '127.0.0.1:54310'
 CHECKPOINT_DIR  = f'hdfs://{HDFS_ADDR}/user/hduser/checkpoint'
-TRAINING_FOLDER = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/train'
+TRAINING_FOLDER = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/train/training_data.csv'
 TESTING_FOLDER  = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/test'
 
 def processLine(line):
@@ -39,20 +39,22 @@ if __name__ == '__main__':
     ssc = StreamingContext(sc, 1)
 
     # Read files from HDFS into stream
-    training = ssc.textFileStream(TRAINING_FOLDER).map(processLine)
+    training = sc.textFile('output/features/csv/train/training.csv').map(processLine)
+    training = ssc.queueStream([training])
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
-    model = StreamingLogisticRegressionWithSGD()
+    model = StreamingLogisticRegressionWithSGD(numIterations=10)
     model.setInitialWeights([0 for i in range(COLUMNS)])
     model.trainOn(training)
 
     # Load the testing data
-    testing = ssc.textFileStream(TESTING_FOLDER)
+    testing = ssc.textFile('output/features/csv/test/testing_data.csv').map(processLine)
+    testing = ssc.queueStream([testing])
 
     # Now predict on the testing data
     print('Predicting on the testing data...')
-    model.predictOn(testing.map(lambda lp: (lp.label, lp.features))).pprint()
+    model.predictOnValues(testing.map(lambda lp: (lp.label, lp.features))).pprint()
 
     # Start ssc and await termination
     ssc.start()
