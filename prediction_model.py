@@ -54,7 +54,7 @@ if __name__ == '__main__':
     ssc = StreamingContext.getOrCreate(CHECKPOINT_DIR, setupStreamContext)
 
     # Read files from HDFS into stream
-    training = ssc.textFileStream(TRAINING_FOLDER).map(processLine)
+    training = ssc.textFileStream(f'{TRAINING_FOLDER}/training_data.csv').map(processLine)
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     model.trainOn(training)
 
     # Load the testing data
-    testing = ssc.textFileStream(TESTING_FOLDER)
+    testing = ssc.textFileStream(f'{TESTING_FOLDER}/testing_data.csv')
 
     # Now predict on the testing data
     print('Predicting on the testing data...')
