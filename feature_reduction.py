@@ -150,7 +150,7 @@ if __name__ == '__main__':
     for file in files:
         new_fname = file.replace('.csv', '_new.csv')
         with open(new_fname, 'w') as output_file:
-            for chunk in pd.read_csv(path, chunksize=CHUNK_SIZE, usecols=features):
+            for chunk in pd.read_csv(file, chunksize=CHUNK_SIZE, usecols=features):
                 chunk = chunk.reindex(columns=features)
                 new_fname.write(chunk.to_csv(index=False, header=False))
     print('All done!')
