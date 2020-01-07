@@ -6,6 +6,7 @@ localhost.
 import os
 import subprocess
 
+CSV_DIR        = os.path.join('output', 'csv')
 HADOOP_BIN_DIR = '/usr/local/hadoop/bin'
 HDFS_DATA_DIR  = '/user/hduser/data'
 
