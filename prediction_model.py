@@ -28,30 +28,15 @@ CHECKPOINT_DIR  = f'hdfs://{HDFS_ADDR}/user/hduser/checkpoint'
 TRAINING_FOLDER = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/train'
 TESTING_FOLDER  = f'hdfs://{HDFS_ADDR}/user/hduser/data/csv/test'
 
-def setupStreamContext():
-    '''Sets up a new streaming context for spark.'''
-    sc = SparkContext(appName="Packet Classifier")
-    sc.setLogLevel("ERROR")
-    ssc = StreamingContext(sc, 1)
-    ssc.checkpoint(CHECKPOINT_DIR)
-    return ssc
-
-def getAccuracy(num_correct, num_wrong):
-    '''Returns the accuracy from the given parameters.'''
-    return num_correct / (num_correct + num_wrong)
-
-def getSensitivity(true_pos, false_neg):
-    return true_pos / (true_pos + false_neg)
-
-def getSpecificity(true_neg, false_pos):
-    return true_neg / (true_neg + false_pos)
-
 def processLine(line):
     return LabeledPoint(label=line.split(',')[0], features=line.split(',')[1:])
 
 if __name__ == '__main__':
+    # Create spark context
+    sc = SparkContext(appName="Packet Classifier")
+    sc.setLogLevel("WARN")
     # Create the streaming context
-    ssc = StreamingContext.getOrCreate(CHECKPOINT_DIR, setupStreamContext)
+    ssc = StreamingContext(sc, 1)
 
     # Read files from HDFS into stream
     training = ssc.textFileStream(f'{TRAINING_FOLDER}/training_data.csv').map(processLine)
