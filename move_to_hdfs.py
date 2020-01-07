@@ -31,8 +31,8 @@ if __name__ == '__main__':
         commands = [
             f'{HADOOP_BIN_DIR}/hdfs',
             'dfs',
-            '-copyFromLocal '
-            f'./{file} ',
+            '-copyFromLocal',
+            f'./{file}',
             f'{HDFS_DATA_DIR}/{hdfs_fname}'
         ]
         proc = subprocess.Popen(commands)
