@@ -7,7 +7,7 @@ are BENIGN or MALICIOUS.
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.mllib.regression import LabeledPoint
-from pyspark.mllib.classification import SVMWithSGD
+from pyspark.mllib.classification import LogisticRegressionWithSGD
 from pyspark.mllib.evaluation import BinaryClassificationMetrics
 
 import os
