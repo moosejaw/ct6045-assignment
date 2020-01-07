@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
-    model = StreamingLogisticRegressionWithSGD(numIterations=10)
+    model = StreamingLogisticRegressionWithSGD()
     model.setInitialWeights([0 for i in range(COLUMNS)])
     model.trainOn(training)
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # Now predict on the testing data
     print('Predicting on the testing data...')
-    model.predictOnValues(testing.map(lambda lp: (lp.label, lp.features))).pprint()
+    model.predictOn(testing.map(lambda lp: (lp.label, lp.features))).pprint()
 
     # Start ssc and await termination
     ssc.start()
