@@ -7,4 +7,4 @@ RUN apt-get -y install git
 RUN git clone https://github.com/gkbrk/slowloris.git
 
 WORKDIR /usr/src/app/slowloris
-CMD ["python3", "slowloris.py"]
+CMD ["python3", "slowloris.py", "target"]
