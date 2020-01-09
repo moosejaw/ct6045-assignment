@@ -21,6 +21,15 @@ if __name__ == '__main__':
     ])
     proc.communicate()
 
+    # Create the streaming directory
+    proc = subprocess.Popen([
+        f'{HADOOP_BIN_DIR}/hdfs',
+        'dfs',
+        '-mkdir',
+        f'{HDFS_DATA_DIR}/streaming'
+    ])
+    proc.communicate()
+
     # Call a subprocess for each file, copying it across
     commands = [
         f'{HADOOP_BIN_DIR}/hdfs',
