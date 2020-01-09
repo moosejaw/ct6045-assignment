@@ -14,8 +14,8 @@ from sklearn.model_selection import train_test_split
 SEED       = 12345
 BASE_DIR   = os.path.join('output', 'features')
 FILES_DIR  = os.path.join(BASE_DIR, 'csv')
-TRAIN_DIR  = os.path.join(FILES_DIR, 'train')
-TEST_DIR   = os.path.join(FILES_DIR, 'test')
+TRAIN_DIR  = os.path.join(FILES_DIR, 'training')
+TEST_DIR   = os.path.join(FILES_DIR, 'testing')
 
 TEST_DATA_FRAC = 0.30 # Fraction of training data will be 1 - this value
 
