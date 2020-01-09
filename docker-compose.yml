@@ -9,9 +9,23 @@ services:
     restart: always
     container_name: target
 
-  attacker:
+  ddos:
     build:
-      context: docker/attacker/
+      context: docker/ddos/
       dockerfile: Dockerfile
     restart: always
-    container_name: attacker
+    container_name: ddos
+
+  normal_traffic:
+    build:
+      context: docker/normal_traffic
+      dockerfile: Dockerfile
+    restart: always
+    container_name: normal_traffic
+
+  slowloris:
+    build:
+      context: docker/slowloris
+      dockerfile: Dockerfile
+    restart: always
+    container_name: slowloris
