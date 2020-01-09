@@ -115,8 +115,8 @@ if __name__ == '__main__':
         proc = Thread(target=processFile, args=[file,
             disc.columns,
             disc.columns_to_retain])
-        proc.start()
         threads.append(proc)
+        proc.start()
     for thread in threads: thread.join()
 
     # Print message when all tasks are complete
