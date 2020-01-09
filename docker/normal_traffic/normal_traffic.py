@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+'''
 This script is designed to emulate normal web traffic. Therefore, it will
 request the server page in a randomly-assigned interval. The request is sent
 as normal using Python's built-in urllib library. The request is opened and
 closed as normal.
+'''
 import time
 import random
 from urllib import request
