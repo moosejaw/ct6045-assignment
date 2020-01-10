@@ -19,16 +19,15 @@ if __name__ == '__main__':
     # Wait a few seconds for target container to spin up
     time.sleep(3)
 
-    while True:
-        # Start the ddos process
-        p = multiprocessing.Process(target=attack)
-        p.start()
+    # Declare the ddos process
+    p = multiprocessing.Process(target=attack)
 
+    while True:
         # Sleep for 5 seconds
         time.sleep(5)
 
-        # Generate random int, if it's 5 then stop the DDoS or restart it:
-        if p.is_alive():
-            p.terminate()
-            p.join()
-        else: p.start()
+        # Generate random int, if it's 5 then stop the DDoS or restart it
+        if random.randint(1, 5) == 5:
+            if p.is_alive():
+                p.terminate()
+            else: p.start()
