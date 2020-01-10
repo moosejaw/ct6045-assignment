@@ -65,14 +65,14 @@ if __name__ == '__main__':
     #ssc = StreamingContext(sc, 1)
 
     # Read files from HDFS into stream
-    training = sc.textFile('output/generated/training/b.csv').map(processGeneratedLine)
+    training = sc.textFile('output/generated/training/a.csv').map(processGeneratedLine)
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
     model = LogisticRegressionWithSGD.train(training)
 
     # Load the testing data
-    testing = sc.textFile('output/generated/testing/a.csv').map(processGeneratedLine)
+    testing = sc.textFile('output/generated/testing/b.csv').map(processGeneratedLine)
 
     # Now predict on the testing data
     print('Predicting on the testing data...')
