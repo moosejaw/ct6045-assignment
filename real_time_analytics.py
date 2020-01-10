@@ -58,7 +58,8 @@ def getStatistics(rdd):
             MODEL_STATS['false_pos'] += 1
         elif pred[0] and not pred[1]:
             MODEL_STATS['false_neg'] += 1
-    print(MODEL_STATS)
+    with open('output/rta_stats.txt', 'w') as f:
+        f.write(f"{MODEL_STATS['total']},{MODEL_STATS['true_neg']},{MODEL_STATS['true_pos']},{MODEL_STATS['false_neg']},{MODEL_STATS['false_pos']}")
 
 if __name__ == '__main__':
     # Get user input first
