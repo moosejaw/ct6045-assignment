@@ -9,11 +9,12 @@ import time
 import subprocess
 from threading import Thread
 
-HADOOP_BIN_DIR     = '/usr/local/hadoop/bin'
-HDFS_STAGING_DIR   = '/user/hduser/data/staging'
-HDFS_STREAMING_DIR = '/user/hduser/data/streaming'
-HDFS_TRAINING_DIR  = '/user/hduser/data/training'
-TRAINING_CSV_DIR   = 'output/features/csv/training'
+HADOOP_BIN_DIR        = '/usr/local/hadoop/bin'
+HDFS_STAGING_DIR      = '/user/hduser/data/staging'
+HDFS_STREAMING_DIR    = '/user/hduser/data/streaming'
+HDFS_TRAINING_DIR     = '/user/hduser/data/training'
+HDFS_SEC_TRAINING_DIR = '/user/hduser/data/sectraining'
+TRAINING_CSV_DIR      = 'output/features/csv/training'
 
 def createHDFSFolders():
     '''Creates the folders for the data in HDFS.'''
@@ -24,6 +25,15 @@ def createHDFSFolders():
         '-mkdir',
         '-p',
         f'{HDFS_TRAINING_DIR}'
+    ])
+    proc.communicate()
+
+    # Create the second training directory
+    proc = subprocess.Popen([
+        f'{HADOOP_BIN_DIR}/hdfs',
+        'dfs',
+        '-mkdir',
+        f'{HDFS_SEC_TRAINING_DIR}
     ])
     proc.communicate()
 
@@ -44,6 +54,16 @@ def createHDFSFolders():
         f'{HDFS_STAGING_DIR}'
     ])
     proc.communicate()
+
+    for dir in [HDFS_STAGING_DIR, HDFS_STREAMING_DIR, HDFS_TRAINING_DIR, \
+        HDFS_SEC_TRAINING_DIR]:
+        proc = subprocess.Popen([
+            f'{HADOOP_BIN_DIR}/hdfs',
+            'dfs',
+            '-rm',
+            f'{dir}/*.csv'
+        ])
+        proc.communicate()
 
 def streamTrainingData():
     '''Copies the training data into HDFS so the model can train on it.'''
@@ -90,13 +110,20 @@ if __name__ == '__main__':
     print('\nNow attempting to create some folders in HDFS. You may see messages saying the folders already exist. If so, you can disregard them.')
     createHDFSFolders()
 
-    print('\n\nType y/Y to stream the training data into HDFS. Do this if the model is not yet trained. Just leave the input blank or type N if this is the case: ')
+    print('\n\nType y/Y to stream the CIC training data into HDFS. Do this if the model is not yet trained. Just leave the input blank or type N if this is the case: ')
     train = input()
     if train.lower().startswith('y'): streamTrainingData()
 
     # Search for new .csv files and stream them into HDFS.
     print(f'\nWaiting for .csv files to be written to {csv_folder}...')
+    training_data_count = 0
     while True:
+        # Determine whether to stream training data into the model
+        if training_data_count < 15: # The first 15 .csv files to arrive will be used as further training data
+            hdfs_final_dir = HDFS_TRAINING_DIR
+            training_data_count += 1
+        else: hdfs_final_dir = HDFS_STREAMING_DIR
+
         # Delay
         time.sleep(5)
 
@@ -126,10 +153,11 @@ if __name__ == '__main__':
                     'dfs',
                     '-mv',
                     f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
-                    f'{HDFS_STREAMING_DIR}'
+                    f'{hdfs_final_dir}'
                 ])
                 proc.communicate()
                 print(f'Moved {new_f} to streaming directory.')
+                if training_data_count < 15: print('This file was treated as training data.')
 
-                # Remove the files after they are made
+                # Remove the files from local after they are made
                 os.remove(new_f)
