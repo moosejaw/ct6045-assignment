@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     # Create the model and train it on the training data
     model = StreamingLogisticRegressionWithSGD()
-    model.setInitialWeights([0 for i in range(COLUMN_INDEXES)])
+    model.setInitialWeights([0 for i in range(len(COLUMN_INDEXES))])
     model.trainOn(trainingStream)
 
     # Get the model to predict on values incoming in the streaming directory
