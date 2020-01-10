@@ -59,7 +59,7 @@ def getSpecificity(tn, fp):
 if __name__ == '__main__':
     # Create spark context
     sc = SparkContext(appName="Packet Classifier")
-    sc.setLogLevel("WARN")
+    sc.setLogLevel("ERROR")
     # Create the streaming context
     #ssc = StreamingContext(sc, 1)
 
@@ -71,7 +71,6 @@ if __name__ == '__main__':
     model = LogisticRegressionWithSGD.train(training)
 
     # Load the testing data
-    files =
     testing = sc.textFile('output/generated/testing/a.csv').map(processGeneratedLine)
 
     # Now predict on the testing data
