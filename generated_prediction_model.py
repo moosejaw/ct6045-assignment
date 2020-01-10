@@ -46,7 +46,7 @@ def processGeneratedLine(line):
     line = line.split(',')
     lbl  = 1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0
     return LabeledPoint(label=lbl, \
-        features=[float(line[i]) for i in line[1:]])
+        features=[float(i) for i in line[1:]])
 
 def getAccuracy(correct, total):
     return correct / total
