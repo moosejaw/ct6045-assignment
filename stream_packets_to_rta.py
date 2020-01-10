@@ -124,17 +124,9 @@ if __name__ == '__main__':
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
                     'dfs',
-                    '-cp',
+                    '-mv',
                     f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
                     f'{HDFS_STREAMING_DIR}'
-                ])
-                proc.communicate()
-
-                proc = subprocess.Popen([
-                    f'{HADOOP_BIN_DIR}/hdfs',
-                    'dfs',
-                    '-rm',
-                    f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
                 ])
                 proc.communicate()
                 print(f'Moved {new_f} to streaming directory.')
