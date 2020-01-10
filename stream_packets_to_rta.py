@@ -90,7 +90,7 @@ if __name__ == '__main__':
     print('\nNow attempting to create some folders in HDFS. You may see messages saying the folders already exist. If so, you can disregard them.')
     createHDFSFolders()
 
-    print('\n\nType y/Y to stream the training data into HDFS. You only need to do this once so if you are running this script a second time, you do not need to do it again! Just leave the input blank or type N if this is the case: ')
+    print('\n\nType y/Y to stream the training data into HDFS. Do this if the model is not yet trained. Just leave the input blank or type N if this is the case: ')
     train = input()
     if train.lower().startswith('y'): streamTrainingData()
 
