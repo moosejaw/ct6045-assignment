@@ -22,7 +22,7 @@ def createHDFSFolders():
         'dfs',
         '-mkdir',
         '-p',
-        f'{HDFS_DATA_DIR}/training'
+        f'{HDFS_TRAINING_DIR}'
     ])
     proc.communicate()
 
@@ -31,7 +31,7 @@ def createHDFSFolders():
         f'{HADOOP_BIN_DIR}/hdfs',
         'dfs',
         '-mkdir',
-        f'{HDFS_DATA_DIR}/streaming'
+        f'{HDFS_STREAMING_DIR}'
     ])
     proc.communicate()
 
