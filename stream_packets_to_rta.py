@@ -131,5 +131,5 @@ if __name__ == '__main__':
                 proc.communicate()
                 print(f'Copied {file} to streaming directory.')
 
-            # Remove the files after they are made
-            for file in files: os.remove(file)
+                # Remove the files after they are made
+                os.remove(new_f)
