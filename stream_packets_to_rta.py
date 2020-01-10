@@ -51,6 +51,7 @@ def streamTrainingData():
             file,
             f'{HDFS_TRAINING_DIR}/{f}'
         ])
+        proc.communicate()
     print('Streamed the training data into HDFS.')
 
 
