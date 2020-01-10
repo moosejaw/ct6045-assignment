@@ -109,8 +109,10 @@ if __name__ == '__main__':
             for file in files:
                 new_f = file.replace(':', '_')
                 os.rename(file, new_f)
+                print(f'The new_f variable is: {new_f}')
                 new_hdfs_f = new_f.split('/')
-                new_hdfs_f = new_f[len(new_f) - 1]
+                new_hdfs_f = new_hdfs_f[len(new_hdfs_f) - 1]
+                print(f'The new_hdfs_f variable is: {new_hdfs_f}')
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
                     'dfs',
