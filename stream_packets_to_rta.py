@@ -147,7 +147,7 @@ if __name__ == '__main__':
                 #
                 # This is not unresaonable as the generated files tend to
                 # contain around 150,000 observations
-                if training_data_count < 5:
+                if training_data_count < 15:
                     hdfs_final_dir = HDFS_SEC_TRAINING_DIR
                     training_data_count += 1
                 else: hdfs_final_dir = HDFS_STREAMING_DIR
@@ -161,7 +161,7 @@ if __name__ == '__main__':
                 ])
                 proc.communicate()
                 print(f'Moved {new_f} to streaming directory.')
-                if training_data_count < 5: print('This file was treated as training data.')
+                if training_data_count < 15: print('This file was treated as training data.')
 
                 # Remove the files from local after they are made
                 os.remove(new_f)
