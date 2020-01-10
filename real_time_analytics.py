@@ -66,9 +66,11 @@ if __name__ == '__main__':
     # Get user input first
     print('You first need to enter the IP addresses of the containers sending malicious packets. In a new tab as a sudo user, run `sudo docker inspect slowloris/ddos`')
     print('Please enter the IP address of the SLOWLORIS container:')
-    MALICIOUS_IPS.append(input())
+    i = input()
+    MALICIOUS_IPS.append(str(i))
     print('Please enter the IP address of the DDOS container:')
-    MALICIOUS_IPS.append(input())
+    i = input()
+    MALICIOUS_IPS.append(str(i))
 
     # First create the streaming context
     sc = SparkContext(appName="Realtime Packet Classifier")
