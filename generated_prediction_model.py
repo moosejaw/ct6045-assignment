@@ -45,9 +45,8 @@ def processGeneratedLine(line):
     # Process the lines based on the columns we want to appear (hard-coded)
     line = line.split(',')
     lbl  = 1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0
-    print(f'Src. IP: {line[SRC_IP_COL]}, Label: {lbl}', flush=False)
     return LabeledPoint(label=lbl, \
-        features=[float(line[i]) for i in COLUMN_INDEXES])
+        features=[float(line[i]) for i in line[1:]])
 
 def getAccuracy(correct, total):
     return correct / total
