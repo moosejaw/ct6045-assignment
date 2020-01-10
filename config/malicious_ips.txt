@@ -1,0 +1,5 @@
+Replace this file's contents with the IP addresses for the slowloris and DDoS containers.
+Separate each with a new line.
+You can find the IP address of each container by running:
+sudo docker inspect slowloris
+sudo docker inspect ddos
