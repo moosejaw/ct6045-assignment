@@ -5,7 +5,6 @@ real time. You must carefully follow the instructions in README.md for this
 model to work correctly.
 '''
 import os
-import pprint
 
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
@@ -29,7 +28,6 @@ COLUMN_INDEXES = [34, 16, 18, 7, 24, 22, 23, 29, 27, 28, 26, 81, 79, 82]
 MALICIOUS_IPS  = []
 
 MODEL_STATS    = {'true_pos': 0, 'false_pos': 0, 'true_neg': 0, 'false_neg': 0, 'total': 0}
-PRINTER        = pprint.PrettyPrinter(indent=4)
 
 def processTrainingLine(line):
     '''Returns a labelled point for RDDs based on the .csv files of the training
@@ -60,7 +58,7 @@ def getStatistics(rdd):
             MODEL_STATS['false_pos'] += 1
         elif pred[0] and not pred[1]:
             MODEL_STATS['false_neg'] += 1
-    PRINTER.pprint(MODEL_STATS)
+    print(MODEL_STATS)
 
 if __name__ == '__main__':
     # Get user input first
