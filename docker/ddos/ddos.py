@@ -29,8 +29,8 @@ if __name__ == '__main__':
         # Sleep for 5 seconds
         time.sleep(5)
 
-        # Generate random int, if it's 5 then stop the DDoS or restart it
-        if random.randint(1, 5) == 5:
+        # Generate random int, if it's 3 then stop the DDoS or restart it
+        if random.randint(1, 3) == 3:
             if p.is_alive():
                 p.terminate()
             else:
