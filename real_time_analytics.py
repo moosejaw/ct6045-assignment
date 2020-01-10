@@ -8,6 +8,7 @@ import os
 
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
+from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.classification import StreamingLogisticRegressionWithSGD
 
 # Set HDFS locations - change to point to your HDFS address and port
