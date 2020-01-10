@@ -22,7 +22,9 @@ UPDATE_TIMER   = 5 # Update the model every x seconds
 
 # The location of each column within the csv file when the header line is split
 LABEL_INDEX    = 83
+SRC_IP_COL     = 1
 COLUMN_INDEXES = [34, 16, 18, 7, 24, 22, 23, 29, 27, 28, 26, 81, 79, 82]
+MALICIOUS_IPS  = ['172.19.0.5', '172.19.0.4']
 
 def processTrainingLine(line):
     '''Returns a labelled point for RDDs based on the .csv files of the training
@@ -38,7 +40,7 @@ def processTestingLine(line):
 
     # Process the lines based on the columns we want to appear (hard-coded)
     line = line.split(',')
-    return LabeledPoint(label=line[LABEL_INDEX], \
+    return LabeledPoint(label=1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0, \
         features=[line[i] for i in COLUMN_INDEXES])
 
 
