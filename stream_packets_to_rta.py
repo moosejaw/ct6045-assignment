@@ -126,7 +126,7 @@ if __name__ == '__main__':
                     'dfs',
                     '-mv',
                     f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
-                    HDFS_STREAMING_DIR
+                    f'{HDFS_STREAMING_DIR}/{new_hdfs_f}'
                 ])
                 proc.communicate()
                 print(f'Copied {file} to streaming directory.')
