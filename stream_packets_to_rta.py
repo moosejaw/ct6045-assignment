@@ -34,15 +34,16 @@ if __name__ == '__main__':
             and file.endswith('.csv')]
         if files:
             for file in files:
-                os.rename(file, file.replace(':', '_'))
-                f = file.split('/')
-                f = f[len(f) - 1]
+                new_f = file.replace(':', '_')
+                os.rename(file, new_f)
+                new_f = file.split('/')
+                new_hdfs_f = f[len(f) - 1]
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
                     'dfs',
                     '-copyFromLocal',
-                    file,
-                    f'{HDFS_STREAMING_DIR}/{f}'
+                    new_f,
+                    f'{HDFS_STREAMING_DIR}/{new_hdfs_f}'
                 ])
                 proc.communicate()
                 print(f'Copied {file} to HDFS.')
