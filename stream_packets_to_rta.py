@@ -15,14 +15,17 @@ HDFS_STREAMING_DIR = '/user/hduser/data/streaming'
 if __name__ == '__main__':
     # Get some necessary user input
     print('Please enter the path where TCPDUMP_and_CICFlowMeter was cloned.\nFor example, this may be /home/users/you/TCPDUMP_and_CICFlowMeter if you cloned the repo to your home folder.')
+    print('Leave the input blank and just hit ENTER if the repo is located at: /home/hduser/TCPDUMP_and_CICFlowMeter')
     print('Enter the path here: ')
     repo_folder = input()
 
+    if not repo_folder: repo_folder = '/home/hduser/TCPDUMP_and_CICFlowMeter'
+
     # Get info from user inputs
-    pcap_folder = os.path.join(repo_folder, 'pcap')
     csv_folder  = os.path.join(repo_folder, 'csv')
 
     # Search for new .csv files and stream them into HDFS.
+    print(f'Waiting for .csv files to be written to {csv_folder}...')
     while True:
         # Delay
         time.sleep(5)
