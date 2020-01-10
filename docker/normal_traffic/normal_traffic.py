@@ -12,7 +12,7 @@ from threading import Thread
 
 # Set the target as defined by the container name and port
 TARGET   = 'http://target/'
-THREADS  = 5 # 5 simulations of normal traffic
+THREADS  = 10 # 10 simulations of normal traffic
 TIME_MIN = 1
 TIME_MAX = 8
 
@@ -33,4 +33,4 @@ if __name__ == '__main__':
         proc = Thread(target=simulateTraffic)
         proc.start()
         threads.append(proc)
-    for thread in threads: thread.join()    
+    for thread in threads: thread.join()
