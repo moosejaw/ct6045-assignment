@@ -12,7 +12,7 @@ from threading import Thread
 HADOOP_BIN_DIR     = '/usr/local/hadoop/bin'
 HDFS_STREAMING_DIR = '/user/hduser/data/streaming'
 HDFS_TRAINING_DIR  = '/user/hduser/data/training'
-TRAINING_CSV_DIR   = os.path.join(os.path.join('output', 'features'), 'csv')
+TRAINING_CSV_DIR   = 'output/features/csv/training'
 
 def createHDFSFolders():
     '''Creates the folders for the data in HDFS.'''
