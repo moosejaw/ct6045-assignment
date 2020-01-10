@@ -10,6 +10,7 @@ import subprocess
 from threading import Thread
 
 HADOOP_BIN_DIR     = '/usr/local/hadoop/bin'
+HDFS_STAGING_DIR   = '/user/hduser/data/staging'
 HDFS_STREAMING_DIR = '/user/hduser/data/streaming'
 HDFS_TRAINING_DIR  = '/user/hduser/data/training'
 TRAINING_CSV_DIR   = 'output/features/csv/training'
@@ -35,6 +36,15 @@ def createHDFSFolders():
     ])
     proc.communicate()
 
+    # Create the staging directory
+    proc = subprocess.Popen([
+        f'{HADOOP_BIN_DIR}/hdfs',
+        'dfs',
+        '-mkdir',
+        f'{HDFS_STAGING_DIR}'
+    ])
+    proc.communicate()
+
 def streamTrainingData():
     '''Copies the training data into HDFS so the model can train on it.'''
     files = [os.path.join(TRAINING_CSV_DIR, file) for file \
@@ -49,7 +59,16 @@ def streamTrainingData():
             'dfs',
             '-copyFromLocal',
             file,
-            f'{HDFS_TRAINING_DIR}/{f}'
+            f'{HDFS_STAGING_DIR}/{f}'
+        ])
+        proc.communicate()
+
+        proc = subprocess.Popen([
+            f'{HADOOP_BIN_DIR}/hdfs',
+            'dfs',
+            '-mv',
+            f'{HDFS_STAGING_DIR}/{f}',
+            HDFS_TRAINING_DIR
         ])
         proc.communicate()
     print('Streamed the training data into HDFS.')
@@ -97,10 +116,20 @@ if __name__ == '__main__':
                     'dfs',
                     '-copyFromLocal',
                     new_f,
-                    f'{HDFS_STREAMING_DIR}/{new_hdfs_f}'
+                    f'{HDFS_STRAGING_DIR}/{new_hdfs_f}'
                 ])
                 proc.communicate()
-                print(f'Copied {file} to HDFS.')
+                print(f'Wrote {file} to staging area in HDFS.')
+
+                proc = subprocess.Popen([
+                    f'{HADOOP_BIN_DIR}/hdfs',
+                    'dfs',
+                    '-mv',
+                    f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
+                    HDFS_STREAMING_DIR
+                ])
+                proc.communicate()
+                print(f'Copied {file} to streaming directory.')
 
             # Remove the files after they are made
             for file in files: os.remove(file)
