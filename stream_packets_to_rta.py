@@ -17,7 +17,7 @@ HDFS_SEC_TRAINING_DIR = '/user/hduser/data/sectraining'
 TRAINING_CSV_DIR      = 'output/features/csv/training'
 
 def createHDFSFolders():
-    '''Creates the folders for the data in HDFS.'''
+    '''Creates the folders for the data in HDFS, and delete the pre-existing data.'''
     # Create the data_dir in hdfs
     proc = subprocess.Popen([
         f'{HADOOP_BIN_DIR}/hdfs',
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     csv_folder  = os.path.join(repo_folder, 'csv')
 
     # Create the new directories in HDFS
-    print('\nNow attempting to create some folders in HDFS. You may see messages saying the folders already exist. If so, you can disregard them.')
+    print('\nNow preparing HDFS. You may see messages saying folders already exist/are empty. If so, you can disregard them.')
     createHDFSFolders()
 
     print('\n\nType y/Y to stream the CIC training data into HDFS. Do this if the model is not yet trained. Just leave the input blank or type N if this is the case: ')
