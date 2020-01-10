@@ -33,7 +33,7 @@ def createHDFSFolders():
         f'{HADOOP_BIN_DIR}/hdfs',
         'dfs',
         '-mkdir',
-        f'{HDFS_SEC_TRAINING_DIR}
+        f'{HDFS_SEC_TRAINING_DIR}'
     ])
     proc.communicate()
 
