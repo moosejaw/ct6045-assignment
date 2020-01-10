@@ -55,4 +55,4 @@ if __name__ == '__main__':
     for file in files:
         os.remove(file)
 
-    print('All done. You should now move these files to HDFS by running move_to_hdfs.py.')
+    print('All done. These files will get copied into HDFS when you run stream_packets_to_rta.py.')
