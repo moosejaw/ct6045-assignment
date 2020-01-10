@@ -34,6 +34,7 @@ if __name__ == '__main__':
             and file.endswith('.csv')]
         if files:
             for file in files:
+                os.rename(file, file.replace(':', '_'))
                 f = file.split('/')
                 f = f[len(f) - 1]
                 proc = subprocess.Popen([
