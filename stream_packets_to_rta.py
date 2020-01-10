@@ -18,10 +18,6 @@ if __name__ == '__main__':
     print('Enter the path here: ')
     repo_folder = input()
 
-    print('\nNow enter the interface you want to listen on.\nThis should be the interface beginning with "br-" listed when running ifconfig.')
-    print('Enter the interface here: ')
-    interface = input()
-
     # Get info from user inputs
     pcap_folder = os.path.join(repo_folder, 'pcap')
     csv_folder  = os.path.join(repo_folder, 'csv')
@@ -38,12 +34,14 @@ if __name__ == '__main__':
             and file.endswith('.csv')]
         if files:
             for file in files:
+                f = file.split('/')
+                f = f[len(f) - 1]
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
                     'dfs',
                     '-copyFromLocal',
                     file,
-                    f'{HDFS_STREAMING_DIR}/'
+                    f'{HDFS_STREAMING_DIR}/{f}'
                 ])
                 proc.communicate()
                 print(f'Copied {file} to HDFS.')
