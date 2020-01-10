@@ -144,7 +144,7 @@ if __name__ == '__main__':
 
                 # Determine whether to stream training data into the model
                 if training_data_count < 15: # The first 15 .csv files to arrive will be used as further training data
-                    hdfs_final_dir = HDFS_TRAINING_DIR
+                    hdfs_final_dir = HDFS_SEC_TRAINING_DIR
                     training_data_count += 1
                 else: hdfs_final_dir = HDFS_STREAMING_DIR
 
