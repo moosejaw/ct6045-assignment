@@ -36,8 +36,8 @@ if __name__ == '__main__':
             for file in files:
                 new_f = file.replace(':', '_')
                 os.rename(file, new_f)
-                new_f = file.split('/')
-                new_hdfs_f = f[len(f) - 1]
+                new_hdfs_f = new_f.split('/')
+                new_hdfs_f = new_f[len(new_f) - 1]
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
                     'dfs',
