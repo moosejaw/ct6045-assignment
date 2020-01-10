@@ -119,17 +119,25 @@ if __name__ == '__main__':
                     f'{HDFS_STAGING_DIR}/{new_hdfs_f}'
                 ])
                 proc.communicate()
-                print(f'Wrote {file} to staging area in HDFS.')
+                print(f'Wrote {new_f} to staging area in HDFS.')
 
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
                     'dfs',
-                    '-mv',
+                    '-cp',
                     f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
-                    f'{HDFS_STREAMING_DIR}/{new_hdfs_f}'
+                    f'{HDFS_STREAMING_DIR}'
                 ])
                 proc.communicate()
-                print(f'Copied {file} to streaming directory.')
+
+                proc = subprocess.Popen([
+                    f'{HADOOP_BIN_DIR}/hdfs',
+                    'dfs',
+                    '-rm',
+                    f'{HDFS_STAGING_DIR}/{new_hdfs_f}',
+                ])
+                proc.communicate()
+                print(f'Moved {new_f} to streaming directory.')
 
                 # Remove the files after they are made
                 os.remove(new_f)
