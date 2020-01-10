@@ -45,8 +45,8 @@ if __name__ == '__main__':
                     file,
                     f'{HDFS_STREAMING_DIR}/'
                 ])
-            proc.communicate()
-            print(f'Copied {file} to HDFS.')
+                proc.communicate()
+                print(f'Copied {file} to HDFS.')
 
             # Remove the files after they are made
             for file in files: os.remove(file)
