@@ -145,7 +145,7 @@ if __name__ == '__main__':
                 # Determine whether to stream training data into the model
                 # The first 2 .csv files to arrive will be used as further training data
                 #
-                # This is not unresaonable as the generated files tend to 
+                # This is not unresaonable as the generated files tend to
                 # contain around 150,000 observations
                 if training_data_count < 2:
                     hdfs_final_dir = HDFS_SEC_TRAINING_DIR
@@ -161,7 +161,7 @@ if __name__ == '__main__':
                 ])
                 proc.communicate()
                 print(f'Moved {new_f} to streaming directory.')
-                if training_data_count < 15: print('This file was treated as training data.')
+                if training_data_count < 2: print('This file was treated as training data.')
 
                 # Remove the files from local after they are made
                 os.remove(new_f)
