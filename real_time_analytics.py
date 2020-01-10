@@ -12,10 +12,11 @@ from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.classification import StreamingLogisticRegressionWithSGD
 
 # Set HDFS locations - change to point to your HDFS address and port
-HDFS_ADDR      = '127.0.0.1'
-HDFS_PORT      = '54310'
-TRAINING_DIR   = f'hdfs://{HDFS_ADDR}:{HDFS_PORT}/user/hduser/data/training'
-STREAMING_DIR  = f'hdfs://{HDFS_ADDR}:{HDFS_PORT}/user/hduser/data/streaming'
+HDFS_ADDR        = '127.0.0.1'
+HDFS_PORT        = '54310'
+TRAINING_DIR     = f'hdfs://{HDFS_ADDR}:{HDFS_PORT}/user/hduser/data/training'
+SEC_TRAINING_DIR = f'hdfs://{HDFS_ADDR}:{HDFS_PORT}/user/hduser/data/sectraining'
+STREAMING_DIR    = f'hdfs://{HDFS_ADDR}:{HDFS_PORT}/user/hduser/data/streaming'
 
 # Model parameters
 UPDATE_TIMER   = 5 # Update the model every x seconds
@@ -31,7 +32,7 @@ def processTrainingLine(line):
     data.'''
     return LabeledPoint(label=line.split(',')[0], features=line.split(',')[1:])
 
-def processTestingLine(line):
+def processGeneratedLine(line):
     '''Returns a labelled point for RDDs based on the .csv files of the data
     being streamed to the model in HDFS.'''
     # Ignore the headers of files - send some dummy data for now
@@ -52,12 +53,14 @@ if __name__ == '__main__':
 
     # Create the data streams for the training and streaming directory
     trainingStream = ssc.textFileStream(TRAINING_DIR).map(processTrainingLine)
-    testingStream  = ssc.textFileStream(STREAMING_DIR).map(processTestingLine)
+    secondaryTrainingStream = ssc.textFileStream(SEC_TRAINING_DIR).map(processGeneratedLine)
+    testingStream  = ssc.textFileStream(STREAMING_DIR).map(processGeneratedLine)
 
     # Create the model and train it on the training data
     model = StreamingLogisticRegressionWithSGD()
     model.setInitialWeights([0 for i in range(len(COLUMN_INDEXES))])
     model.trainOn(trainingStream)
+    model.trainOn(secondaryTrainingStream)
 
     # Get the model to predict on values incoming in the streaming directory
     model.predictOnValues(testingStream.map(lambda lp: (lp.label, lp.features))\
