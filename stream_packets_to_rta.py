@@ -39,7 +39,7 @@ def streamTrainingData():
     '''Copies the training data into HDFS so the model can train on it.'''
     files = [os.path.join(TRAINING_CSV_DIR, file) for file \
         in os.listdir(TRAINING_CSV_DIR) if \
-        os.path.isfile(os.path,join(TRAINING_CSV_DIR, file)) \
+        os.path.isfile(os.path.join(TRAINING_CSV_DIR, file)) \
         and file.endswith('.csv')]
     for file in files:
         f = file.split('/')
@@ -51,6 +51,7 @@ def streamTrainingData():
             file,
             f'{HDFS_TRAINING_DIR}/{f}'
         ])
+    print('Streamed the training data into HDFS.')
 
 
 if __name__ == '__main__':
@@ -66,9 +67,10 @@ if __name__ == '__main__':
     csv_folder  = os.path.join(repo_folder, 'csv')
 
     # Create the new directories in HDFS
+    print('\nNow attempting to create some folders in HDFS. You may see messages saying the folders already exist. If so, you can disregard them.')
     createHDFSFolders()
 
-    print('Type y/Y to stream the training data into HDFS. You only need to do this once so if you are running this script a second time, you do not need to do it again! Just leave the input blank or type N if this is the case: ')
+    print('\n\nType y/Y to stream the training data into HDFS. You only need to do this once so if you are running this script a second time, you do not need to do it again! Just leave the input blank or type N if this is the case: ')
     train = input()
     if train.lower().startswith('y'): streamTrainingData()
 
