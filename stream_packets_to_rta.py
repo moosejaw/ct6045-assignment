@@ -118,12 +118,6 @@ if __name__ == '__main__':
     print(f'\nWaiting for .csv files to be written to {csv_folder}...')
     training_data_count = 0
     while True:
-        # Determine whether to stream training data into the model
-        if training_data_count < 15: # The first 15 .csv files to arrive will be used as further training data
-            hdfs_final_dir = HDFS_TRAINING_DIR
-            training_data_count += 1
-        else: hdfs_final_dir = HDFS_STREAMING_DIR
-
         # Delay
         time.sleep(5)
 
@@ -147,6 +141,12 @@ if __name__ == '__main__':
                 ])
                 proc.communicate()
                 print(f'Wrote {new_f} to staging area in HDFS.')
+
+                # Determine whether to stream training data into the model
+                if training_data_count < 15: # The first 15 .csv files to arrive will be used as further training data
+                    hdfs_final_dir = HDFS_TRAINING_DIR
+                    training_data_count += 1
+                else: hdfs_final_dir = HDFS_STREAMING_DIR
 
                 proc = subprocess.Popen([
                     f'{HADOOP_BIN_DIR}/hdfs',
