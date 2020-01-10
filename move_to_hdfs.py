@@ -17,7 +17,7 @@ if __name__ == '__main__':
         'dfs',
         '-mkdir',
         '-p',
-        HDFS_DATA_DIR
+        f'{HDFS_DATA_DIR}/training'
     ])
     proc.communicate()
 
