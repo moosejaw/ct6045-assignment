@@ -11,6 +11,47 @@ from threading import Thread
 
 HADOOP_BIN_DIR     = '/usr/local/hadoop/bin'
 HDFS_STREAMING_DIR = '/user/hduser/data/streaming'
+HDFS_TRAINING_DIR  = '/user/hduser/data/training'
+TRAINING_CSV_DIR   = os.path.join(os.path.join('output', 'features'), 'csv')
+
+def createHDFSFolders():
+    '''Creates the folders for the data in HDFS.'''
+    # Create the data_dir in hdfs
+    proc = subprocess.Popen([
+        f'{HADOOP_BIN_DIR}/hdfs',
+        'dfs',
+        '-mkdir',
+        '-p',
+        f'{HDFS_DATA_DIR}/training'
+    ])
+    proc.communicate()
+
+    # Create the streaming directory
+    proc = subprocess.Popen([
+        f'{HADOOP_BIN_DIR}/hdfs',
+        'dfs',
+        '-mkdir',
+        f'{HDFS_DATA_DIR}/streaming'
+    ])
+    proc.communicate()
+
+def streamTrainingData():
+    '''Copies the training data into HDFS so the model can train on it.'''
+    files = [os.path.join(TRAINING_CSV_DIR, file) for file \
+        in os.listdir(TRAINING_CSV_DIR) if \
+        os.path.isfile(os.path,join(TRAINING_CSV_DIR, file)) \
+        and file.endswith('.csv')]
+    for file in files:
+        f = file.split('/')
+        f = f[len(f) - 1]
+        proc = subprocess.Popen([
+            f'{HADOOP_BIN_DIR}/hdfs',
+            'dfs',
+            '-copyFromLocal',
+            file,
+            f'{HDFS_TRAINING_DIR}/{f}'
+        ])
+
 
 if __name__ == '__main__':
     # Get some necessary user input
@@ -24,8 +65,15 @@ if __name__ == '__main__':
     # Get info from user inputs
     csv_folder  = os.path.join(repo_folder, 'csv')
 
+    # Create the new directories in HDFS
+    createHDFSFolders()
+
+    print('Type y/Y to stream the training data into HDFS. You only need to do this once so if you are running this script a second time, you do not need to do it again! Just leave the input blank or type N if this is the case: ')
+    train = input()
+    if train.lower().startswith('y'): streamTrainingData()
+
     # Search for new .csv files and stream them into HDFS.
-    print(f'Waiting for .csv files to be written to {csv_folder}...')
+    print(f'\nWaiting for .csv files to be written to {csv_folder}...')
     while True:
         # Delay
         time.sleep(5)
