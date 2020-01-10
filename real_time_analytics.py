@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     # Get the model to predict on values incoming in the streaming directory
     model.predictOnValues(testingStream.map(lambda lp: (lp.label, lp.features))\
-        ).pprint()
+        ).pprint(50)
 
     # Start the stream and await manual termination
     ssc.start()
