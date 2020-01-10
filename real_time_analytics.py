@@ -38,7 +38,8 @@ def processTestingLine(line):
 
     # Process the lines based on the columns we want to appear (hard-coded)
     line = line.split(',')
-    return LabeledPoint(label=line[0], features=[line[i] for i in COLUMN_INDEXES])
+    return LabeledPoint(label=line[LABEL_INDEX], \
+        features=[line[i] for i in COLUMN_INDEXES])
 
 
 if __name__ == '__main__':
