@@ -35,6 +35,9 @@ def streamFilesToHDFS(csv_folder):
             proc.communicate()
             print(f'Copied {file} to HDFS.')
 
+            # Remove the files after they are made
+            for file in files: os.remove(file)
+
 def runPacketSniffer(repo_folder, interface, pcap_folder):
     '''Runs the packet sniffing script, creating the files to be streamed to
     HDFS.'''
