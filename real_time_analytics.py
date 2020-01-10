@@ -60,7 +60,7 @@ def getStatistics(rdd):
             MODEL_STATS['false_pos'] += 1
         elif pred[0] and not pred[1]:
             MODEL_STATS['false_neg'] += 1
-    PRINTER.print(MODEL_STATS)
+    PRINTER.pprint(MODEL_STATS)
 
 if __name__ == '__main__':
     # Get user input first
