@@ -8,19 +8,29 @@ closed as normal.
 import time
 import random
 from urllib import request
+from threading import Thread
 
 # Set the target as defined by the container name and port
 TARGET   = 'http://target/'
-TIME_MIN = 5
-TIME_MAX = 30
+THREADS  = 5 # 5 simulations of normal traffic
+TIME_MIN = 1
+TIME_MAX = 8
 
-if __name__ == '__main__':
-    # Wait a few seconds for the target container to spin up
-    time.sleep(10)
+def simulateTraffic():
     while True:
         # Pause for a random time in the given range
         time.sleep(random.randrange(TIME_MIN, TIME_MAX))
         # Open the request
         request.urlopen(TARGET)
-        # Print to say the request was made
-        print('Sent a request to the target.')
+
+if __name__ == '__main__':
+    # Wait a few seconds for the target container to spin up
+    time.sleep(10)
+
+    # Create threads and join them
+    threads = []
+    for i in range(THREADS):
+        proc = Thread(target=simulateTraffic)
+        proc.start()
+        threads.append(proc)
+    for thread in threads: thread.join()    
