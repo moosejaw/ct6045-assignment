@@ -116,7 +116,7 @@ if __name__ == '__main__':
                     'dfs',
                     '-copyFromLocal',
                     new_f,
-                    f'{HDFS_STRAGING_DIR}/{new_hdfs_f}'
+                    f'{HDFS_STAGING_DIR}/{new_hdfs_f}'
                 ])
                 proc.communicate()
                 print(f'Wrote {file} to staging area in HDFS.')
