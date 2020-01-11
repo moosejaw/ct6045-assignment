@@ -80,7 +80,7 @@ def printStats():
         acc = getAccuracy(MODEL_STATS["true_neg"] + MODEL_STATS["true_pos"],
             tot)
         sens = getSensitivty(MODEL_STATS["true_pos"], MODEL_STATS["false_neg"])
-        spec = getSensitivty(MODEL_STATS["true_neg"], MODEL_STATS["false_pos"])
+        spec = getSpecificity(MODEL_STATS["true_neg"], MODEL_STATS["false_pos"])
         print(f'''
         ------------
         Current Statistics:
