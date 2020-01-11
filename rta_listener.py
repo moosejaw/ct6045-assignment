@@ -15,7 +15,11 @@ def establishSocket():
     '''Establishes a socket to listen on.'''
     # Create the socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(('localhost', 10025))
+    bound = False
+    try:
+        sock.bind(('localhost', 10025))
+        bound = True
+    except OSError: pass
     sock.listen(500)
     conn, addr = sock.accept()
     return conn

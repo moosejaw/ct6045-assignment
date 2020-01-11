@@ -34,7 +34,12 @@ def sendStatistics(it):
     '''Sends the predictions over a connection to a listening script, per the
     recommendations of Spark.'''
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(('localhost', 10025))
+    conn_est = False
+    while not conn_est:
+        try:
+            sock.connect(('localhost', 10025))
+            conn_est = True
+        except ConnectionRefusedError: pass
     for record in it:
         data = f'{record[0]},{record[1]}X'
         sock.sendall(data.encode())
