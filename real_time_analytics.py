@@ -5,6 +5,7 @@ real time. You must carefully follow the instructions in README.md for this
 model to work correctly.
 '''
 import os
+import socket
 
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
@@ -46,20 +47,14 @@ def processGeneratedLine(line):
     return LabeledPoint(label=1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0, \
         features=[float(line[i]) for i in COLUMN_INDEXES])
 
-def getStatistics(rdd):
-    stats = rdd.collect()
-    MODEL_STATS['total'] += len(stats)
-    for pred in stats:
-        if not pred[0] and not pred[1]:
-            MODEL_STATS['true_neg'] += 1
-        elif pred[0] and pred[1]:
-            MODEL_STATS['true_pos'] += 1
-        elif not pred[0] and pred[1]:
-            MODEL_STATS['false_pos'] += 1
-        elif pred[0] and not pred[1]:
-            MODEL_STATS['false_neg'] += 1
-    with open('output/rta_stats.txt', 'w') as f:
-        f.write(f"{MODEL_STATS['total']},{MODEL_STATS['true_neg']},{MODEL_STATS['true_pos']},{MODEL_STATS['false_neg']},{MODEL_STATS['false_pos']}")
+def sendStatistics(it):
+    '''Sends the predictions over a connection to a listening script, per the
+    recommendations of Spark.'''
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(('localhost', 10025))
+    for record in iter:
+        sock.sendall(f'{record[0]},{[record[1]}'.encode())
+    sock.close()
 
 if __name__ == '__main__':
     # Get user input first
@@ -84,7 +79,7 @@ if __name__ == '__main__':
 
     # Get the model to predict on values incoming in the streaming directory
     model.predictOnValues(testingStream.map(lambda lp: (lp.label, lp.features))\
-        ).foreachRDD(getStatistics)
+        ).foreachRDD(lambda rdd: rdd.forEachPartition(sendStatistics))
 
     # Start the stream and await manual termination
     ssc.start()
