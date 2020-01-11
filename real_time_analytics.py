@@ -30,6 +30,16 @@ MALICIOUS_IPS  = []
 
 MODEL_STATS    = {'true_pos': 0, 'false_pos': 0, 'true_neg': 0, 'false_neg': 0, 'total': 0}
 
+def sendStatistics(it):
+    '''Sends the predictions over a connection to a listening script, per the
+    recommendations of Spark.'''
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(('localhost', 10025))
+    for record in it:
+        data = f'{record[0]},{record[1]}'
+        sock.sendall(data.encode())
+    sock.close()
+    
 def processTrainingLine(line):
     '''Returns a labelled point for RDDs based on the .csv files of the training
     data.'''
@@ -46,16 +56,6 @@ def processGeneratedLine(line):
     line = line.split(',')
     return LabeledPoint(label=1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0, \
         features=[float(line[i]) for i in COLUMN_INDEXES])
-
-def sendStatistics(it):
-    '''Sends the predictions over a connection to a listening script, per the
-    recommendations of Spark.'''
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(('localhost', 10025))
-    for record in iter:
-        data = f'{record[0]},{record[1]}'
-        sock.sendall(data.encode())
-    sock.close()
 
 if __name__ == '__main__':
     # Get user input first
