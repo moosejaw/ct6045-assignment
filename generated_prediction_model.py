@@ -12,8 +12,12 @@ from pyspark.mllib.evaluation import BinaryClassificationMetrics
 
 import os
 import pprint
+import matplotlib
+matplotlib.use('Agg')
 import numpy as np
 import pandas as pd
+from sklearn import metrics
+import matplotlib.pyplot as plt
 from modules.terminal_colour import Color
 
 COLOUR      = Color()
@@ -25,6 +29,7 @@ COLUMNS     = 14 # All the numerical features we will use
 CHUNK_SIZE  = 4096
 SEED        = 12345
 K           = 10 # Value of k used in k-fold validation
+ROC_OUTPUT  = os.path.join('output', 'roc_curve.png')
 
 # The location of each column within the csv file when the header line is split
 LABEL_INDEX    = 83
@@ -46,7 +51,7 @@ def processGeneratedLine(line):
     line = line.split(',')
     lbl  = 1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0
     return LabeledPoint(label=lbl, \
-        features=[float(i) for i in line[1:83]])
+        features=[float(line[i]) for i in COLUMN_INDEXES])
 
 def getAccuracy(correct, total):
     return correct / total
@@ -69,7 +74,7 @@ if __name__ == '__main__':
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
-    model = LogisticRegressionWithSGD.train(training)
+    model = LogisticRegressionWithSGD.train(training, intercept=True, iterations=500)
 
     # Load the testing data
     testing = sc.textFile('output/generated/testing/b.csv').map(processGeneratedLine)
@@ -94,9 +99,13 @@ if __name__ == '__main__':
         'false_neg': 0,
         'len': 0}
 
+    y_true = []
+    y_pred = []
     for pair in evaluation.collect():
         label = pair[1]
         pred  = pair[0]
+        y_true.append(label)
+        y_pred.append(pred)
         scorecard['len'] += 1
 
         # Get whether the prediction was TP, FP, TN, FN
@@ -125,3 +134,16 @@ if __name__ == '__main__':
     spec = getSpecificity(scorecard['true_neg'], scorecard['false_pos'])
     print(f'Specificity : {spec}')
     COLOUR.reset()
+
+    # Plot the ROC
+    print('Plotting the ROC curve...')
+    fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred, pos_label=1.0)
+    plt.figure()
+    plt.plot(fpr, tpr, color='darkorange', lw=2,
+        label='AUC: %.2f' % {metrics.areaUnderROC})
+    plt.xlabel('False positive rate')
+    plt.ylabel('True positive rate')
+    plt.title('ROC Curve for trained logistic regression model')
+    plt.legend(loc='lower right')
+    plt.savefig(ROC_OUTPUT)
+    print(f'Saved the figure to {ROC_OUTPUT}.')
