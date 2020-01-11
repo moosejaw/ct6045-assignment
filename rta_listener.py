@@ -38,7 +38,7 @@ def receiveData():
                 if pkt:
                     try:
                         DATA_QUEUE.put((int(pkt[0]), int(pkt[2])))
-                    except ValueError:
+                    except (ValueError, IndexError):
                         pass
 
 def processQueue():
