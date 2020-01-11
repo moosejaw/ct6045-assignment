@@ -60,40 +60,42 @@ def processQueue():
             elif pred[0] and not pred[1]:
                 MODEL_STATS['false_neg'] += 1
             DATA_QUEUE.task_done()
-        else: time.sleep(2)
+        else:
+            printStats()
+            break
 
 def printStats():
     '''Prints the model statistic tally every 10 seconds.'''
-    while True:
-        time.sleep(15)
-        tot = 0
-        for i in MODEL_STATS.keys(): tot = tot + MODEL_STATS[i]
-        acc = getAccuracy(MODEL_STATS["true_neg"] + MODEL_STATS["true_pos"],
-            tot)
-        sens = getSensitivity(MODEL_STATS["true_pos"], MODEL_STATS["false_neg"])
-        spec = getSpecificity(MODEL_STATS["true_neg"], MODEL_STATS["false_pos"])
-        print(f'''
-        ------------
-        Running Totals:
-        ------------
-        True Negs.  : {MODEL_STATS["true_neg"]}
-        True Pos.   : {MODEL_STATS["true_pos"]}
-        False Pos.  : {MODEL_STATS["false_pos"]}
-        False Negs. : {MODEL_STATS["false_neg"]}
-        Total       : {tot}
-        ------------
-        Stats:
-        ------------
-        Accuracy    : {acc}
-        Sensitivity : {sens}
-        Specificity : {spec}
-        \n
-        ''')
+    tot = 0
+    for i in MODEL_STATS.keys(): tot = tot + MODEL_STATS[i]
+    acc = getAccuracy(MODEL_STATS["true_neg"] + MODEL_STATS["true_pos"],
+        tot)
+    sens = getSensitivity(MODEL_STATS["true_pos"], MODEL_STATS["false_neg"])
+    spec = getSpecificity(MODEL_STATS["true_neg"], MODEL_STATS["false_pos"])
+    print(f'''
+    ------------
+    Running Totals:
+    ------------
+    True Negs.  : {MODEL_STATS["true_neg"]}
+    True Pos.   : {MODEL_STATS["true_pos"]}
+    False Pos.  : {MODEL_STATS["false_pos"]}
+    False Negs. : {MODEL_STATS["false_neg"]}
+    Total       : {tot}
+    ------------
+    Stats:
+    ------------
+    Accuracy    : {acc}
+    Sensitivity : {sens}
+    Specificity : {spec}
+    \n
+    ''', flush=False)
 
 def addToQueue(it):
     '''Adds the data to be processed by the queue.'''
     for record in it:
         DATA_QUEUE.put((record[0], record[1]))
+    processQueue()
+
 
 # def sendStatistics(it):
 #     '''Sends the predictions over a connection to a listening script, per the
@@ -128,13 +130,6 @@ def processGeneratedLine(line):
         features=[float(i) for i in line[7:82]])
 
 if __name__ == '__main__':
-    # Set up the threads
-    threads = []
-    thr     = Thread(target=processQueue)
-    threads.append(thr)
-    thr     = Thread(target=printStats)
-    threads.append(thr)
-
     # Get user input first
     with open('config/malicious_ips.txt', 'r') as f:
         for line in f: MALICIOUS_IPS.append(str(line.replace('\n', '')))
@@ -161,7 +156,4 @@ if __name__ == '__main__':
 
     # Start the stream and await manual termination
     ssc.start()
-    for thread in threads:
-        thread.start()
-        thread.join()
     ssc.awaitTermination()
