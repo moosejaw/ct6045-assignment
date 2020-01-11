@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     # Create the model and train it on the training dataset
     print('Training the regression model...')
-    model = LogisticRegressionWithSGD.train(training, intercept=True, iterations=500)
+    model = LogisticRegressionWithSGD.train(training, intercept=True, iterations=5000)
 
     # Load the testing data
     testing = sc.textFile('output/generated/testing/b.csv').map(processGeneratedLine)
