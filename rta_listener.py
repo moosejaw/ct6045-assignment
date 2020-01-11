@@ -14,7 +14,7 @@ MODEL_STATS = {'true_neg': 0, 'true_pos': 0, 'false_neg': 0, 'false_pos': 0}
 def establishSocket():
     '''Establishes a socket to listen on.'''
     # Create the socket
-    sock = socket.socket(sock.AF_INET, socket.SOCK_STREAM)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(('localhost', 10025))
     sock.listen(500)
     conn, addr = sock.accept()
