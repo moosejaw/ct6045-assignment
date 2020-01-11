@@ -5,7 +5,7 @@ real time. You must carefully follow the instructions in README.md for this
 model to work correctly.
 '''
 import os
-import socket
+import time
 
 from queue import Queue
 from threading import Thread
