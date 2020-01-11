@@ -25,12 +25,17 @@ def receiveData():
     data to a queue to be processed.'''
     conn = establishSocket()
     while True:
-        data = conn.recv(3)
+        data = conn.recv(1024)
         if not data:
             conn = establishSocket()
         else:
-            data = data.decode()
-            DATA_QUEUE.put((int(data[0]), int(data[2])))
+            data = data.decode().split('X')
+            for pkt in data:
+                if pkt:
+                    try:
+                        DATA_QUEUE.put((int(pkt[0]), int(pkt[2])))
+                    except ValueError:
+                        pass
 
 def processQueue():
     '''Processes the data in the queue.'''
