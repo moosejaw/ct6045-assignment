@@ -160,7 +160,7 @@ if __name__ == '__main__':
                     f'{hdfs_final_dir}'
                 ])
                 proc.communicate()
-                print(f'Moved {new_f} to streaming directory.')
+                print(f'Moved {new_f} to {hdfs_final_dir}.')
                 if training_data_count < 5: print('This file was treated as training data.')
 
                 # Remove the files from local after they are made
