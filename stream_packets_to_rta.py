@@ -147,9 +147,9 @@ if __name__ == '__main__':
                 #
                 # This is not unresaonable as the generated files tend to
                 # contain many observations
-                if training_data_count < 1:
+                if training_data_count < 5:
                     hdfs_final_dir = HDFS_SEC_TRAINING_DIR
-                    training_data_count += 1
+                    training_data_count += 5
                 else: hdfs_final_dir = HDFS_STREAMING_DIR
 
                 proc = subprocess.Popen([
@@ -161,7 +161,7 @@ if __name__ == '__main__':
                 ])
                 proc.communicate()
                 print(f'Moved {new_f} to streaming directory.')
-                if training_data_count < 1: print('This file was treated as training data.')
+                if training_data_count < 5: print('This file was treated as training data.')
 
                 # Remove the files from local after they are made
                 os.remove(new_f)
