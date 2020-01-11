@@ -45,7 +45,7 @@ def processGeneratedLine(line):
     being streamed to the model in HDFS.'''
     # Ignore the headers of files - send some dummy data for now
     if str(line[0]).isalpha(): return LabeledPoint(label=0.0, \
-        features=[0.0 for i in range(len(COL))])
+        features=[0.0 for i in range(len(COLUMN_INDEXES))])
 
     # Process the lines based on the columns we want to appear (hard-coded)
     line = line.split(',')
