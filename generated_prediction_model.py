@@ -16,7 +16,7 @@ import matplotlib
 matplotlib.use('Agg')
 import numpy as np
 import pandas as pd
-from sklearn import metrics
+from sklearn.metrics import roc_curve
 import matplotlib.pyplot as plt
 from modules.terminal_colour import Color
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
     # Plot the ROC
     print('Plotting the ROC curve...')
-    fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred, pos_label=1.0)
+    fpr, tpr, thresholds = roc_curve(y_true, y_pred, pos_label=1.0)
     plt.figure()
     plt.plot(fpr, tpr, color='darkorange', lw=2,
         label='AUC: %.2f' % {metrics.areaUnderROC})
