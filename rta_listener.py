@@ -71,19 +71,20 @@ def processQueue():
             DATA_QUEUE.task_done()
         else: time.sleep(2)
 
-def printStats():
+def printStats(current):
     '''Prints the model statistic tally every 10 seconds.'''
     while True:
         time.sleep(15)
         tot = 0
         for i in MODEL_STATS.keys(): tot = tot + MODEL_STATS[i]
+        curr =
         acc = getAccuracy(MODEL_STATS["true_neg"] + MODEL_STATS["true_pos"],
             tot)
         sens = getSensitivity(MODEL_STATS["true_pos"], MODEL_STATS["false_neg"])
         spec = getSpecificity(MODEL_STATS["true_neg"], MODEL_STATS["false_pos"])
         print(f'''
         ------------
-        Current Statistics:
+        Running Totals:
         ------------
         True Negs.  : {MODEL_STATS["true_neg"]}
         True Pos.   : {MODEL_STATS["true_pos"]}
@@ -91,10 +92,11 @@ def printStats():
         False Negs. : {MODEL_STATS["false_neg"]}
         Total       : {tot}
         ------------
+        Stats:
+        ------------
         Accuracy    : {acc}
         Sensitivity : {sens}
         Specificity : {spec}
-        ------------
         \n
         ''')
 
