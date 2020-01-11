@@ -53,7 +53,8 @@ def sendStatistics(it):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(('localhost', 10025))
     for record in iter:
-        sock.sendall(f'{record[0]},{[record[1]}'.encode())
+        data = f'{record[0]},{record[1]}'
+        sock.sendall(data.encode())
     sock.close()
 
 if __name__ == '__main__':
