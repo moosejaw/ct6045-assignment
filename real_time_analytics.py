@@ -78,7 +78,7 @@ if __name__ == '__main__':
     testingStream  = ssc.textFileStream(STREAMING_DIR).map(processGeneratedLine)
 
     # Create the model and train it on the training data
-    model = StreamingLogisticRegressionWithSGD(numIterations=500)
+    model = StreamingLogisticRegressionWithSGD(numIterations=1000)
     model.setInitialWeights([0 for i in range(len(COLUMN_INDEXES))])
     model.trainOn(trainingStream)
     model.trainOn(secondaryTrainingStream)
