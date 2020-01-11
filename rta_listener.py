@@ -20,7 +20,7 @@ def getSensitivity(tp, fn):
     return tp / (tp + fn)
 
 def getSpecificity(tn, fp):
-    if not tp or not fp: return 0
+    if not tn or not fp: return 0
     return tn / (tn + fp)
 
 def establishSocket():
