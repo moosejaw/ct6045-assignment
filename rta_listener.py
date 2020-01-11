@@ -76,7 +76,7 @@ def printStats():
     while True:
         time.sleep(15)
         tot = 0
-        for i in MODEL_STATS.items(): tot = tot + i
+        for i in MODEL_STATS.keys(): tot = tot + MODEL_STATS[i]
         acc = getAccuracy(MODEL_STATS["true_neg"] + MODEL_STATS["true_pos"],
             tot)
         sens = getSensitivty(MODEL_STATS["true_pos"], MODEL_STATS["false_neg"])
