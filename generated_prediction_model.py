@@ -45,13 +45,13 @@ def processGeneratedLine(line):
     being streamed to the model in HDFS.'''
     # Ignore the headers of files - send some dummy data for now
     if str(line[0]).isalpha(): return LabeledPoint(label=0.0, \
-        features=[0.0 for i in range(len(COLUMN_INDEXES))])
+        features=[0.0 for i in range(len(line[7:82]))])
 
     # Process the lines based on the columns we want to appear (hard-coded)
     line = line.split(',')
     lbl  = 1.0 if line[SRC_IP_COL] in MALICIOUS_IPS else 0.0
     return LabeledPoint(label=lbl, \
-        features=[float(line[i]) for i in COLUMN_INDEXES])
+        features=[float(i) for i in line[7:82]])
 
 def getAccuracy(correct, total):
     return correct / total
