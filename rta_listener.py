@@ -11,6 +11,18 @@ from threading import Thread
 DATA_QUEUE  = Queue()
 MODEL_STATS = {'true_neg': 0, 'true_pos': 0, 'false_neg': 0, 'false_pos': 0}
 
+def getAccuracy(correct, total):
+    if not correct or not total: return 0
+    return correct / total
+
+def getSensitivity(tp, fn):
+    if not tp or not fn: return 0
+    return tp / (tp + fn)
+
+def getSpecificity(tn, fp):
+    if not tp or not fp: return 0
+    return tn / (tn + fp)
+
 def establishSocket():
     '''Establishes a socket to listen on.'''
     # Create the socket
@@ -62,9 +74,29 @@ def processQueue():
 def printStats():
     '''Prints the model statistic tally every 10 seconds.'''
     while True:
-        time.sleep(10)
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint(MODEL_STATS)
+        time.sleep(15)
+        tot = 0
+        for i in MODEL_STATS.items(): tot = tot + i
+        acc = getAccuracy(MODEL_STATS["true_neg"] + MODEL_STATS["true_pos"],
+            tot)
+        sens = getSensitivty(MODEL_STATS["true_pos"], MODEL_STATS["false_neg"])
+        spec = getSensitivty(MODEL_STATS["true_neg"], MODEL_STATS["false_pos"])
+        print(f'''
+        ------------
+        Current Statistics:
+        ------------
+        True Negs.  : {MODEL_STATS["true_neg"]}
+        True Pos.   : {MODEL_STATS["true_pos"]}
+        False Pos.  : {MODEL_STATS["false_pos"]}
+        False Negs. : {MODEL_STATS["false_neg"]}
+        Total       : {tot}
+        ------------
+        Accuracy    : {acc}
+        Sensitivity : {sens}
+        Specificity : {spec}
+        ------------
+        \n
+        ''')
 
 if __name__ == '__main__':
     # Create threads for each task
