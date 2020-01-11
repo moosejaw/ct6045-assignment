@@ -36,10 +36,10 @@ def sendStatistics(it):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(('localhost', 10025))
     for record in it:
-        data = f'{record[0]},{record[1]}'
+        data = f'{record[0]},{record[1]}X'
         sock.sendall(data.encode())
     sock.close()
-    
+
 def processTrainingLine(line):
     '''Returns a labelled point for RDDs based on the .csv files of the training
     data.'''
