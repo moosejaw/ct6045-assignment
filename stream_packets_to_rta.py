@@ -149,7 +149,7 @@ if __name__ == '__main__':
                 # contain many observations
                 if training_data_count < 5:
                     hdfs_final_dir = HDFS_SEC_TRAINING_DIR
-                    training_data_count += 5
+                    training_data_count += 1
                 else: hdfs_final_dir = HDFS_STREAMING_DIR
 
                 proc = subprocess.Popen([
