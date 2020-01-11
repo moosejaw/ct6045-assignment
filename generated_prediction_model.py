@@ -140,7 +140,7 @@ if __name__ == '__main__':
     fpr, tpr, thresholds = roc_curve(y_true, y_pred, pos_label=1.0)
     plt.figure()
     plt.plot(fpr, tpr, color='darkorange', lw=2,
-        label='AUC: %.2f' % {metrics.areaUnderROC})
+        label='AUC: %.2f' % metrics.areaUnderROC)
     plt.xlabel('False positive rate')
     plt.ylabel('True positive rate')
     plt.title('ROC Curve for trained logistic regression model')
