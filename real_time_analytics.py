@@ -69,7 +69,7 @@ def processGeneratedLine(line):
 if __name__ == '__main__':
     # Get user input first
     with open('config/malicious_ips.txt', 'r') as f:
-        for line in f: MALICIOUS_IPS.append(str(line[:-1]))
+        for line in f: MALICIOUS_IPS.append(str(line.replace('\n', '')))
 
     # First create the streaming context
     sc = SparkContext(appName="Realtime Packet Classifier")
