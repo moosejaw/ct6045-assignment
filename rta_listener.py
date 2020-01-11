@@ -16,10 +16,12 @@ def establishSocket():
     # Create the socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     bound = False
-    try:
-        sock.bind(('localhost', 10025))
-        bound = True
-    except OSError: pass
+    while not bound:
+        try:
+            time.sleep(1)
+            sock.bind(('localhost', 10025))
+            bound = True
+        except OSError: pass
     sock.listen(500)
     conn, addr = sock.accept()
     return conn
