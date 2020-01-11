@@ -71,7 +71,7 @@ def processQueue():
             DATA_QUEUE.task_done()
         else: time.sleep(2)
 
-def printStats(current):
+def printStats():
     '''Prints the model statistic tally every 10 seconds.'''
     while True:
         time.sleep(15)
