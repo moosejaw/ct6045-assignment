@@ -30,7 +30,7 @@ def receiveData():
             conn = establishSocket()
         else:
             data = data.decode()
-            DATA_QUEUE.append((int(data[0]), int(data[2])))
+            DATA_QUEUE.put((int(data[0]), int(data[2])))
 
 def processQueue():
     '''Processes the data in the queue.'''
