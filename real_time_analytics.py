@@ -132,11 +132,8 @@ if __name__ == '__main__':
     threads = []
     thr     = Thread(target=processQueue)
     threads.append(thr)
-    thr.start()
     thr     = Thread(target=printStats)
     threads.append(thr)
-    thr.start()
-    for thread in threads: thread.join()
 
     # Get user input first
     with open('config/malicious_ips.txt', 'r') as f:
@@ -164,4 +161,7 @@ if __name__ == '__main__':
 
     # Start the stream and await manual termination
     ssc.start()
+    for thread in threads:
+        thread.start()
+        thread.join()
     ssc.awaitTermination()
