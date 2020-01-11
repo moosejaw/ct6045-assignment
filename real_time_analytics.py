@@ -41,10 +41,6 @@ def sendStatistics(it):
             conn_est = True
         except ConnectionRefusedError: pass
     for record in it:
-        done = False
-        if not done:
-            print(f'The record is {record} and its type is {type(record)}')
-            done = True
         data = f'{record[0]},{record[1]}X'
         sock.sendall(data.encode())
     sock.close()
