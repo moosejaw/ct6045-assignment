@@ -190,7 +190,7 @@ if __name__ == '__main__':
 
     # Now enumerate the files and load them into a list
     data_files = [os.path.join(BASE_DIR, i) for i in os.listdir(BASE_DIR) \
-        if os.path.isfile(os.path.join(BASE_DIR, i))]
+        if os.path.isfile(os.path.join(BASE_DIR, i)) and i.endswith('.csv')]
     pagerank_files = [os.path.join(PR_DIR, i) for i in os.listdir(PR_DIR) \
         if os.path.isfile(os.path.join(PR_DIR, i))]
 
