@@ -174,7 +174,8 @@ if __name__ == '__main__':
     # Get all the files in the processed data directory
     files      = [os.path.join(FILES_PATH, i) \
         for i in os.listdir(FILES_PATH) \
-        if os.path.isfile(os.path.join(FILES_PATH, i)]
+        if os.path.isfile(os.path.join(FILES_PATH, i)) \
+        and i.endswith('.csv')]
 
     # We will use the columns specified in the global variable to determine
     # which columns we want to perform PageRank on.
