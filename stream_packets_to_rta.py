@@ -110,9 +110,9 @@ if __name__ == '__main__':
     print('\nNow preparing HDFS. You may see messages saying folders already exist/are empty. If so, you can disregard them.')
     createHDFSFolders()
 
-    print('\n\nType y/Y to stream the CIC training data into HDFS. Do this if the model is not yet trained. Just leave the input blank or type N if this is the case: ')
-    train = input()
-    if train.lower().startswith('y'): streamTrainingData()
+    #print('\n\nType y/Y to stream the CIC training data into HDFS. Do this if the model is not yet trained. Just leave the input blank or type N if this is the case: ')
+    #train = input()
+    #if train.lower().startswith('y'): streamTrainingData()
 
     # Search for new .csv files and stream them into HDFS.
     print(f'\nWaiting for .csv files to be written to {csv_folder}...')
